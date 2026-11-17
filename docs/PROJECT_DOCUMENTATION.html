@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Project Documentation - Blood Donation Management System</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 15mm 20mm 15mm;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    line-height: 1.6;
+    font-size: 11pt;
+    background: #fff;
+  }
+  .cover {
+    text-align: center;
+    padding: 60px 20px 40px 20px;
+    page-break-after: always;
+    border-bottom: 3px solid #0f766e;
+  }
+  .cover h1 {
+    font-size: 26pt;
+    color: #0f766e;
+    margin-bottom: 10px;
+    font-weight: 800;
+  }
+  .cover h2 {
+    font-size: 15pt;
+    color: #e11d48;
+    margin-bottom: 25px;
+    font-weight: 600;
+  }
+  .cover .meta {
+    font-size: 11pt;
+    color: #475569;
+    margin-top: 30px;
+    line-height: 1.8;
+  }
+  .cover .meta strong {
+    color: #0f766e;
+  }
+  h2 {
+    font-size: 16pt;
+    color: #0f766e;
+    border-bottom: 1.5px solid #0f766e;
+    padding-bottom: 5px;
+    margin-top: 25px;
+    margin-bottom: 12px;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-size: 13pt;
+    color: #1e293b;
+    margin-top: 18px;
+    margin-bottom: 8px;
+    page-break-after: avoid;
+  }
+  p {
+    margin-bottom: 10px;
+    text-align: justify;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0 20px 0;
+    font-size: 9.5pt;
+    page-break-inside: avoid;
+  }
+  th, td {
+    border: 1px solid #cbd5e1;
+    padding: 8px 10px;
+    text-align: left;
+  }
+  th {
+    background-color: #f1f5f9;
+    color: #0f766e;
+    font-weight: 700;
+  }
+  tr:nth-child(even) {
+    background-color: #f8fafc;
+  }
+  code {
+    background-color: #f1f5f9;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 9.5pt;
+    color: #e11d48;
+  }
+  pre {
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-left: 4px solid #0f766e;
+    padding: 12px;
+    border-radius: 4px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 9pt;
+    line-height: 1.4;
+    overflow-x: auto;
+    page-break-inside: avoid;
+  }
+  ul, ol {
+    margin-bottom: 12px;
+    padding-left: 24px;
+  }
+  li {
+    margin-bottom: 4px;
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 8.5pt;
+    font-weight: 700;
+  }
+  .badge-mint { background: #ccfbf1; color: #0f766e; }
+  .badge-rose { background: #ffe4e6; color: #be123c; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <h1>BLOOD DONATION MANAGEMENT SYSTEM</h1>
+  <h2>Project Documentation & Technical Report</h2>
+  <div class="meta">
+    <p><strong>Course:</strong> Advanced Java Programming (Mini-Project)</p>
+    <p><strong>Institution:</strong> Guru Nanak Institute of Management Studies (GNIMS)</p>
+    <p><strong>Campus:</strong> King's Circle, Matunga (East), Mumbai - 400019</p>
+    <p><strong>Department:</strong> Department of Information Technology & Computer Applications</p>
+    <p><strong>Technology Stack:</strong> Java 21 LTS &bull; Spring Boot 4 &bull; Spring Data JPA &bull; MySQL 8.4 LTS &bull; JSP &bull; Vanilla CSS & JS</p>
+    <p><strong>Academic Year:</strong> 2026 – 2027</p>
+  </div>
+</div>
+
+<h2>1. Executive Summary & Abstract</h2>
+<p>
+The <strong>Blood Donation Management System (BDMS)</strong> is a centralized web-based healthcare management platform designed to automate and accelerate the coordination between voluntary blood donors, patients, and hospital blood banks.
+</p>
+<p>
+Traditional operations are challenged by outdated paper records, uncoordinated donor calls, and severe donor contact privacy breaches. BDMS introduces an architecturally robust solution that features:
+</p>
+<ul>
+  <li>Role-based access control for <strong>Donors</strong> and <strong>Administrators</strong>.</li>
+  <li>Instant multi-criteria search filtering by blood group (A+, A-, B+, B-, AB+, AB-, O+, O-) and city.</li>
+  <li>Strict <strong>Donor Contact Protection</strong>: Contact telephone numbers and email addresses are omitted from public directory tables to prevent spam and telemarketing harassment.</li>
+  <li>Clinical emergency requisition tracking with urgency ratings (<code>NORMAL</code>, <code>URGENT</code>, <code>CRITICAL</code>).</li>
+  <li>Immutable audit logging for donor availability state changes.</li>
+</ul>
+
+<h2>2. Objectives & Scope</h2>
+<h3>Project Objectives</h3>
+<ul>
+  <li><strong>Digital Record Keeping:</strong> Replace manual logbooks with an ACID-compliant relational MySQL database.</li>
+  <li><strong>Rapid Matching:</strong> Enable patients and hospital coordinators to locate nearby compatible donors in seconds.</li>
+  <li><strong>Eligibility Governance:</strong> Track donors' last donation dates and enforce medical cooling intervals.</li>
+  <li><strong>Administrative Accountability:</strong> Audit all availability updates and requisition status transitions.</li>
+</ul>
+
+<h3>Project Scope</h3>
+<ul>
+  <li><strong>In-Scope:</strong> Public donor directory, secure donor registration, session management with BCrypt password encryption, blood requisition lifecycles, clinical donation logging, and hospital requisition tracking.</li>
+  <li><strong>Out-of-Scope:</strong> Real-time GPS coordinate mapping, SMS gateway dispatch (mocked via flash alerts), and online payment gateways.</li>
+</ul>
+
+<h2>3. System Requirements Specification (SRS)</h2>
+<table>
+  <tr>
+    <th>Category</th>
+    <th>Specification Requirement</th>
+  </tr>
+  <tr>
+    <td><strong>Operating System</strong></td>
+    <td>Microsoft Windows 10/11, Ubuntu 22.04 LTS, or macOS Sonoma</td>
+  </tr>
+  <tr>
+    <td><strong>Runtime & Language</strong></td>
+    <td>Java Development Kit (JDK) 21 LTS (OpenJDK / Eclipse Adoptium Temurin)</td>
+  </tr>
+  <tr>
+    <td><strong>Framework</strong></td>
+    <td>Spring Boot 4 (Spring MVC, Spring Data JPA, Spring Validation)</td>
+  </tr>
+  <tr>
+    <td><strong>Database Server</strong></td>
+    <td>MySQL Server 8.0 / 8.4 LTS (Standard Port 3306)</td>
+  </tr>
+  <tr>
+    <td><strong>Database Client</strong></td>
+    <td>MySQL Workbench 8.0 CE</td>
+  </tr>
+  <tr>
+    <td><strong>Build & Dependency Tool</strong></td>
+    <td>Apache Maven 3.9+ (Configured via project <code>mvnw</code> wrapper)</td>
+  </tr>
+  <tr>
+    <td><strong>Client Interface</strong></td>
+    <td>HTML5, JSP (Jakarta JSTL 3.0), Component-separated CSS3, Vanilla JS</td>
+  </tr>
+</table>
+
+<h2>4. System Architecture</h2>
+<p>
+The application adheres strictly to the <strong>Model-View-Controller (MVC)</strong> paradigm across a <strong>3-Tier Layered Architecture</strong>:
+</p>
+<ol>
+  <li><strong>Presentation Layer (View):</strong> Server-rendered JSP templates styled with componentized CSS implementing a medical 5-color palette (Warm Alabaster, Clinical Teal, Vibrant Rose-Red, Soft Mint, Deep Charcoal).</li>
+  <li><strong>Controller & Business Layer (Controller & Service):</strong> Spring MVC controllers process incoming HTTP requests, validate input via Bean Validation (<code>@Valid</code>), enforce session security, and delegate to transactional service classes (<code>@Transactional</code>).</li>
+  <li><strong>Data Access & Persistence Layer (Model):</strong> Spring Data JPA repositories leverage Hibernate ORM to map persistent entities to MySQL tables, using <code>@EntityGraph</code> to eliminate N+1 query bottlenecks.</li>
+</ol>
+
+<h2>5. Database Design & Data Dictionary</h2>
+<p>The database schema <code>blood_donation_db</code> consists of 6 highly normalized tables:</p>
+
+<h3>Table 1: users</h3>
+<table>
+  <tr><th>Column</th><th>Type</th><th>Constraints</th><th>Description</th></tr>
+  <tr><td><code>user_id</code></td><td>BIGINT</td><td>PK, AUTO_INCREMENT</td><td>Unique system identifier</td></tr>
+  <tr><td><code>full_name</code></td><td>VARCHAR(100)</td><td>NOT NULL</td><td>User legal full name</td></tr>
+  <tr><td><code>email</code></td><td>VARCHAR(100)</td><td>NOT NULL, UNIQUE</td><td>Login email address</td></tr>
+  <tr><td><code>password</code></td><td>VARCHAR(255)</td><td>NOT NULL</td><td>BCrypt salted password hash</td></tr>
+  <tr><td><code>role</code></td><td>VARCHAR(20)</td><td>CHECK ('ADMIN','DONOR')</td><td>Access role</td></tr>
+  <tr><td><code>account_status</code></td><td>VARCHAR(20)</td><td>CHECK ('ACTIVE','INACTIVE')</td><td>Account standing</td></tr>
+  <tr><td><code>created_at</code></td><td>DATETIME</td><td>DEFAULT CURRENT_TIMESTAMP</td><td>Registration timestamp</td></tr>
+</table>
+
+<h3>Table 2: blood_groups</h3>
+<table>
+  <tr><th>Column</th><th>Type</th><th>Constraints</th><th>Description</th></tr>
+  <tr><td><code>blood_group_id</code></td><td>BIGINT</td><td>PK, AUTO_INCREMENT</td><td>Lookup identifier</td></tr>
+  <tr><td><code>group_name</code></td><td>VARCHAR(5)</td><td>NOT NULL, UNIQUE, CHECK</td><td>A+, A-, B+, B-, AB+, AB-, O+, O-</td></tr>
+</table>
+
+<h3>Table 3: donors</h3>
+<table>
+  <tr><th>Column</th><th>Type</th><th>Constraints</th><th>Description</th></tr>
+  <tr><td><code>donor_id</code></td><td>BIGINT</td><td>PK, AUTO_INCREMENT</td><td>Donor profile primary key</td></tr>
+  <tr><td><code>user_id</code></td><td>BIGINT</td><td>FK -> users, UNIQUE</td><td>1-to-1 link to user identity</td></tr>
+  <tr><td><code>blood_group_id</code></td><td>BIGINT</td><td>FK -> blood_groups</td><td>ABO & Rh blood group</td></tr>
+  <tr><td><code>date_of_birth</code></td><td>DATE</td><td>NOT NULL</td><td>Birth date for eligibility</td></tr>
+  <tr><td><code>phone</code></td><td>VARCHAR(15)</td><td>NOT NULL</td><td>Contact telephone number</td></tr>
+  <tr><td><code>gender</code></td><td>VARCHAR(20)</td><td>CHECK ('MALE','FEMALE',...)</td><td>Biological gender</td></tr>
+  <tr><td><code>city</code></td><td>VARCHAR(100)</td><td>NOT NULL, INDEX</td><td>Residential city</td></tr>
+  <tr><td><code>area</code></td><td>VARCHAR(100)</td><td>NULL</td><td>Locality / Area</td></tr>
+  <tr><td><code>last_donation_date</code></td><td>DATE</td><td>NULL</td><td>Timestamp of last donation</td></tr>
+  <tr><td><code>availability</code></td><td>BOOLEAN</td><td>DEFAULT TRUE, INDEX</td><td>Donation readiness flag</td></tr>
+  <tr><td><code>created_at</code></td><td>DATETIME</td><td>DEFAULT CURRENT_TIMESTAMP</td><td>Record creation date</td></tr>
+</table>
+
+<h3>Table 4: donation_history</h3>
+<table>
+  <tr><th>Column</th><th>Type</th><th>Constraints</th><th>Description</th></tr>
+  <tr><td><code>donation_id</code></td><td>BIGINT</td><td>PK, AUTO_INCREMENT</td><td>Donation event primary key</td></tr>
+  <tr><td><code>donor_id</code></td><td>BIGINT</td><td>FK -> donors</td><td>Donor who donated</td></tr>
+  <tr><td><code>donation_date</code></td><td>DATE</td><td>NOT NULL</td><td>Clinical date of donation</td></tr>
+  <tr><td><code>donation_location</code></td><td>VARCHAR(150)</td><td>NOT NULL</td><td>Facility / Camp location</td></tr>
+  <tr><td><code>remarks</code></td><td>VARCHAR(255)</td><td>NULL</td><td>Clinical observations</td></tr>
+  <tr><td><code>recorded_by</code></td><td>BIGINT</td><td>FK -> users</td><td>Admin who verified entry</td></tr>
+</table>
+
+<h3>Table 5: blood_requests</h3>
+<table>
+  <tr><th>Column</th><th>Type</th><th>Constraints</th><th>Description</th></tr>
+  <tr><td><code>request_id</code></td><td>BIGINT</td><td>PK, AUTO_INCREMENT</td><td>Request requisition primary key</td></tr>
+  <tr><td><code>patient_name</code></td><td>VARCHAR(100)</td><td>NOT NULL</td><td>Patient requiring transfusion</td></tr>
+  <tr><td><code>contact_number</code></td><td>VARCHAR(15)</td><td>NOT NULL</td><td>Hospital attendant contact</td></tr>
+  <tr><td><code>blood_group_id</code></td><td>BIGINT</td><td>FK -> blood_groups</td><td>Blood group required</td></tr>
+  <tr><td><code>units_required</code></td><td>INT</td><td>CHECK (units_required >= 1)</td><td>Units demanded</td></tr>
+  <tr><td><code>hospital_name</code></td><td>VARCHAR(150)</td><td>NOT NULL</td><td>Hospital / Clinic venue</td></tr>
+  <tr><td><code>city</code></td><td>VARCHAR(100)</td><td>NOT NULL, INDEX</td><td>City of requisition</td></tr>
+  <tr><td><code>urgency</code></td><td>VARCHAR(20)</td><td>CHECK ('NORMAL','URGENT','CRITICAL')</td><td>Clinical triage urgency</td></tr>
+  <tr><td><code>status</code></td><td>VARCHAR(20)</td><td>CHECK ('PENDING','IN_PROGRESS',...)</td><td>Current lifecycle state</td></tr>
+  <tr><td><code>required_by</code></td><td>DATETIME</td><td>NULL</td><td>Delivery deadline</td></tr>
+  <tr><td><code>created_by</code></td><td>BIGINT</td><td>FK -> users</td><td>Administrator who logged request</td></tr>
+</table>
+
+<h3>Table 6: donor_availability_history</h3>
+<table>
+  <tr><th>Column</th><th>Type</th><th>Constraints</th><th>Description</th></tr>
+  <tr><td><code>history_id</code></td><td>BIGINT</td><td>PK, AUTO_INCREMENT</td><td>Audit entry identifier</td></tr>
+  <tr><td><code>donor_id</code></td><td>BIGINT</td><td>FK -> donors</td><td>Donor whose status changed</td></tr>
+  <tr><td><code>previous_status</code></td><td>BOOLEAN</td><td>NULL</td><td>Status before update</td></tr>
+  <tr><td><code>new_status</code></td><td>BOOLEAN</td><td>NOT NULL</td><td>Status after update</td></tr>
+  <tr><td><code>updated_at</code></td><td>DATETIME</td><td>DEFAULT CURRENT_TIMESTAMP</td><td>Audit timestamp</td></tr>
+  <tr><td><code>updated_by</code></td><td>BIGINT</td><td>FK -> users</td><td>User who triggered change</td></tr>
+</table>
+
+<h2>6. Syllabus Concepts Demonstrated (Advanced Java)</h2>
+<ul>
+  <li><strong>Java Collections Framework:</strong> Extensive use of <code>List&lt;T&gt;</code>, <code>ArrayList&lt;T&gt;</code>, and <code>Optional&lt;T&gt;</code>. Stream pipelines (<code>.stream().map(...).filter(...).toList()</code>) are implemented across all controllers and service layers.</li>
+  <li><strong>Spring Boot & Dependency Injection:</strong> Constructor-based injection is utilized across all beans without <code>@Autowired</code> field injection to guarantee testability and immutability.</li>
+  <li><strong>Database Connectivity & JPA:</strong> Complex derived queries, <code>@EntityGraph</code> eager-loading optimization, and declarative transaction management via <code>@Transactional</code>.</li>
+  <li><strong>Bean Validation:</strong> Declarative validation annotations (<code>@NotBlank</code>, <code>@Size</code>, <code>@Past</code>, <code>@Positive</code>, <code>@Pattern</code>) coupled with Spring <code>BindingResult</code>.</li>
+  <li><strong>Security:</strong> BCrypt salted hashing and session fixation defense via <code>request.changeSessionId()</code>.</li>
+</ul>
+
+<h2>7. Conclusion</h2>
+<p>
+The Blood Donation Management System provides a complete, secure, and production-tested web platform engineered to meet the highest academic standards of an Advanced Java curriculum. It fulfills all functional requirements, features an intuitive healthcare-focused user experience, and adheres to strict medical data privacy standards.
+</p>
+
+</body>
+</html>

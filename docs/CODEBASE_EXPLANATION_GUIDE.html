@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Comprehensive Codebase Explanation Guide - BDMS</title>
+<style>
+  @page {
+    size: A4;
+    margin: 18mm 14mm 18mm 14mm;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    line-height: 1.5;
+    font-size: 10pt;
+    background: #fff;
+  }
+  .header-box {
+    text-align: center;
+    padding: 24px 10px;
+    margin-bottom: 25px;
+    border-bottom: 2.5px solid #0f766e;
+  }
+  h1 {
+    font-size: 20pt;
+    color: #0f766e;
+    margin-bottom: 6px;
+    font-weight: 800;
+  }
+  .subtitle {
+    font-size: 12pt;
+    color: #e11d48;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .academic-info {
+    font-size: 9pt;
+    color: #475569;
+  }
+  h2 {
+    font-size: 13.5pt;
+    color: #0f766e;
+    background: #f0fdfa;
+    border-left: 4px solid #0f766e;
+    padding: 5px 10px;
+    margin-top: 24px;
+    margin-bottom: 12px;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-size: 11pt;
+    color: #1e293b;
+    margin-top: 14px;
+    margin-bottom: 6px;
+    page-break-after: avoid;
+  }
+  .file-item {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 5px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    page-break-inside: avoid;
+  }
+  .file-path {
+    font-family: Consolas, monospace;
+    font-size: 8.5pt;
+    color: #0f766e;
+    font-weight: 700;
+    background: #f1f5f9;
+    padding: 2px 6px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+  .file-role {
+    font-weight: 600;
+    color: #e11d48;
+    margin-bottom: 4px;
+  }
+  ul {
+    margin: 4px 0 6px 0;
+    padding-left: 20px;
+  }
+  li {
+    margin-bottom: 3px;
+  }
+  code {
+    background-color: #f1f5f9;
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 9pt;
+    color: #0f766e;
+  }
+</style>
+</head>
+<body>
+
+<div class="header-box">
+  <h1>CODEBASE EXPLANATION GUIDE</h1>
+  <div class="subtitle">Exhaustive File-by-File Breakdown: Backend & Frontend Architecture</div>
+  <div class="academic-info">
+    Blood Donation Management System (BDMS) &bull; Advanced Java Programming &bull; GNIMS Mumbai
+  </div>
+</div>
+
+<h2>PART 1: BACKEND ARCHITECTURE & ALL FILES</h2>
+
+<h3>1. Configuration & Application Bootstrap</h3>
+
+<div class="file-item">
+  <div class="file-path">src/main/java/com/bdms/BloodDonationManagementSystemApplication.java</div>
+  <div class="file-role">Role: Application Entry Point & Spring Boot Starter</div>
+  <p>The main class annotated with <code>@SpringBootApplication</code>. Initializes the Spring ApplicationContext, starts the embedded Tomcat server on port 8080, and triggers package scanning across <code>com.bdms</code>.</p>
+  <ul>
+    <li><strong>Concepts Used:</strong> Inversion of Control (IoC), Framework Bootstrapping, JVM entry point.</li>
+  </ul>
+</div>
+
+<div class="file-item">
+  <div class="file-path">src/main/java/com/bdms/ServletInitializer.java</div>
+  <div class="file-role">Role: WAR Deployment Initializer</div>
+  <p>Extends <code>SpringBootServletInitializer</code> and overrides <code>configure()</code>, allowing the application to be deployed as a standard WAR file on external enterprise servlet containers (Apache Tomcat, WildFly).</p>
+  <ul>
+    <li><strong>Concepts Used:</strong> Jakarta Servlet 6.0 Specification, WAR Packaging Lifecycle.</li>
+  </ul>
+</div>
+
+<div class="file-item">
+  <div class="file-path">src/main/java/com/bdms/config/PasswordConfig.java</div>
+  <div class="file-role">Role: Cryptographic Security Bean Definition</div>
+  <p>Defines a Spring <code>@Bean</code> returning a singleton instance of <code>BCryptPasswordEncoder()</code>. Injected into authentication and registration services to salt and hash passwords.</p>
+  <ul>
+    <li><strong>Concepts Used:</strong> Dependency Injection (DI), Cryptographic Key Derivation (BCrypt 10-round salt).</li>
+  </ul>
+</div>
+
+<div class="file-item">
+  <div class="file-path">src/main/resources/application.properties</div>
+  <div class="file-role">Role: Core Application Configuration</div>
+  <p>Configures database connection parameters (MySQL port 3306), Hibernate DDL validation mode (<code>ddl-auto=validate</code>), and sets Spring MVC JSP view resolution prefix (<code>/WEB-INF/views/</code>) and suffix (<code>.jsp</code>).</p>
+  <ul>
+    <li><strong>Concepts Used:</strong> Declarative Configuration, Environment Fallback Variables (<code>${DB_PASSWORD:root}</code>).</li>
+  </ul>
+</div>
+
+<h3>2. Domain Enums</h3>
+
+<div class="file-item">
+  <div class="file-path">src/main/java/com/bdms/enums/UserRole.java</div>
+  <p>Defines role-based access levels: <code>ADMIN</code> and <code>DONOR</code>. Used in session verification and route authorization.</p>
+</div>
+
+<div class="file-item">
+  <div class="file-path">src/main/java/com/bdms/enums/AccountStatus.java</div>
+  <p>Defines account standings: <code>ACTIVE</code> and <code>INACTIVE</code>. Governs account suspension workflows.</p>
+</div>
+
+<div class="file-item">
+  <div class="file-path">src/main/java/com/bdms/enums/RequestStatus.java</div>
+  <p>Represents blood request lifecycles: <code>PENDING</code>, <code>IN_PROGRESS</code>, <code>FULFILLED</code>, <code>CANCELLED</code>.</p>
+</div>
+
+<div class="file-item">
+  <div class="file-path">src/main/java/com/bdms/enums/UrgencyLevel.java</div>
+  <p>Clinical emergency classification: <code>NORMAL</code>, <code>URGENT</code>, <code>CRITICAL</code>.</p>
+</div>
+
+<h3>3. Custom Domain Exceptions</h3>
+
+<div class="file-item">
+  <div class="file-path">src/main/java/com/bdms/exception/BusinessRuleException.java</div>
+  <p>Unchecked runtime exception thrown when domain rules fail (e.g., date in future, invalid status transition). Prevents invalid database transactions.</p>
+</div>
+
+<div class="file-item">
+  <div class="file-path">src/main/java/com/bdms/exception/ResourceNotFoundException.java</div>
+  <p>Unchecked runtime exception thrown when an entity is not found by ID or email.</p>
+</div>
+
+<h3>4. JPA Persistence Entities</h3>
+
+<div class="file-item">
+  <div class="file-path">src/main/java/com/bdms/entity/User.java</div>
+  <p>Maps to the <code>users</code> table. Stores account credentials, email, hashed password, role, and account status.</p>
+  <ul><li><strong>Concepts Used:</strong> <code>@Entity</code>, <code>@Table</code>, <code>@Id</code>, <code>@GeneratedValue</code>, <code>@Enumerated(EnumType.STRING)</code>.</li></ul>
+</div>
+
+<div class="file-item">
+  <div class="file-path">src/main/java/com/bdms/entity/Donor.java</div>
+  <p>Maps to <code>donors</code> table. Contains medical donor attributes: DOB, phone, gender, city, area, last donation date, and live availability flag.</p>
+  <ul><li><strong>Concepts Used:</strong> <code>@OneToOne</code> with User, <code>@ManyToOne</code> with BloodGroup.</li></ul>
+</div>
+
+<div class="file-item">
+  <div class="file-path">src/main/java/com/bdms/entity/BloodGroup.java</div>
+  <p>Lookup entity mapping to <code>blood_groups</code> table holding the 8 supported blood groups.</p>
+</div>
+
+<div class="file-item">
+  <div class="file-path">src/main/java/com/bdms/entity/BloodRequest.java</div>
+  <p>Maps to <code>blood_requests</code> table. Represents hospital requisitions with patient name, required units, hospital, city, urgency, and status.</p>
+</div>
+
+<div class="file-item">
+  <div class="file-path">src/main/java/com/bdms/entity/DonationHistory.java</div>
+  <p>Maps to <code>donation_history</code>. Captures completed clinical donations with donor reference, date, venue, and verifying administrator.</p>
+</div>
+
+<div class="file-item">
+  <div class="file-path">src/main/java/com/bdms/entity/DonorAvailabilityHistory.java</div>
+  <p>Maps to <code>donor_availability_history</code>. An immutable audit record capturing previous status, new status, and timestamp.</p>
+</div>
+
+<h3>5. Data Transfer Objects (DTOs)</h3>
+
+<div class="file-item">
+  <div class="file-path">src/main/java/com/bdms/dto/ (11 DTO Files)</div>
+  <p><code>LoginRequest</code>, <code>RegisterDonorRequest</code>, <code>UserResponse</code>, <code>DonorResponse</code>, <code>AvailabilityUpdateRequest</code>, <code>AvailabilityHistoryResponse</code>, <code>BloodRequestCreateRequest</code>, <code>BloodRequestResponse</code>, <code>DonationCreateRequest</code>, <code>DonationResponse</code>, <code>BloodGroupResponse</code>.</p>
+  <ul>
+    <li><strong>Concepts Used:</strong> Encapsulation, Mass-Assignment Protection, JSR-380 Bean Validation (<code>@NotBlank</code>, <code>@Past</code>, <code>@Positive</code>, <code>@Pattern</code>).</li>
+  </ul>
+</div>
+
+<h3>6. Repositories (Data Access Layer)</h3>
+
+<div class="file-item">
+  <div class="file-path">src/main/java/com/bdms/repository/ (6 Repository Interfaces)</div>
+  <p><code>UserRepository</code>, <code>DonorRepository</code>, <code>BloodGroupRepository</code>, <code>BloodRequestRepository</code>, <code>DonationHistoryRepository</code>, <code>DonorAvailabilityHistoryRepository</code>.</p>
+  <ul>
+    <li><strong>Key Concept:</strong> <code>DonorRepository</code> employs <code>@EntityGraph(attributePaths = {"user", "bloodGroup"})</code> to execute SQL joins in a single round-trip, eliminating Hibernate N+1 query overhead.</li>
+  </ul>
+</div>
+
+<h3>7. Service Layer (Interfaces & Implementations)</h3>
+
+<div class="file-item">
+  <div class="file-path">src/main/java/com/bdms/service/ & service/impl/ (12 Files)</div>
+  <p>Interfaces and their corresponding implementations: <code>UserServiceImpl</code>, <code>DonorServiceImpl</code>, <code>BloodGroupServiceImpl</code>, <code>BloodRequestServiceImpl</code>, <code>DonationHistoryServiceImpl</code>, <code>DonorAvailabilityHistoryServiceImpl</code>.</p>
+  <ul>
+    <li><strong>Concepts Used:</strong> Interface-based abstraction, <code>@Transactional</code> transaction boundaries, business validation, automatic date synchronization (updating <code>donor.lastDonationDate</code> during donation logging).</li>
+  </ul>
+</div>
+
+<h3>8. Controller Layer (Spring MVC)</h3>
+
+<div class="file-item">
+  <div class="file-path">src/main/java/com/bdms/controller/ (8 Controllers)</div>
+  <ul>
+    <li><code>AuthController</code>: Authentication, registration, session management, and root URL routing.</li>
+    <li><code>AdminController</code>: Central administrative console with aggregate metric calculations.</li>
+    <li><code>DonorController</code>: Donor dashboard, profile updates, and public donor search.</li>
+    <li><code>BloodRequestController</code>: Hospital blood demand creation, search, and status updates.</li>
+    <li><code>DonationHistoryController</code>: Verified blood donation logging and certificate views.</li>
+    <li><code>DonorAvailabilityHistoryController</code>: Donor and administrative availability audit trails.</li>
+    <li><code>BloodGroupController</code>: Visual blood group lookup.</li>
+    <li><code>UserController</code>: Admin management of user account standing (Active/Inactive).</li>
+  </ul>
+</div>
+
+<div style="page-break-after: always;"></div>
+
+<h2>PART 2: FRONTEND ARCHITECTURE & ALL FILES</h2>
+
+<p>The presentation tier follows standard <strong>Jakarta Server Pages (JSP)</strong>, JSTL 3.0, and a modular healthcare 5-color palette (Warm Alabaster <code>#FFFDFB</code>, Clinical Teal <code>#0F766E</code>, Vibrant Rose-Red <code>#E11D48</code>, Soft Mint <code>#CCFBF1</code>, Deep Charcoal <code>#1E293B</code>).</p>
+
+<h3>1. Modular Stylesheets & Scripts (`src/main/resources/static/`)</h3>
+
+<div class="file-item">
+  <div class="file-path">css/base.css</div>
+  <p>Declares CSS variables for the 5-color palette, global font settings, the 95% desktop layout container (<code>max-width: 1280px</code>), button components (<code>.btn-primary</code>, <code>.btn-secondary</code>, <code>.btn-mint</code>), and the 4-column clinical footer grid.</p>
+</div>
+
+<div class="file-item">
+  <div class="file-path">css/navbar.css</div>
+  <p>Implements the sticky top navigation bar (<code>position: sticky; top: 0; z-index: 1000</code>), Clinical Teal background (<code>#0F766E</code>), brand iconography, and role-based action buttons.</p>
+</div>
+
+<div class="file-item">
+  <div class="file-path">css/cards.css</div>
+  <p>Styles metric cards, clinical profile info grids, <code>.blood-badge</code> pills, the medical Hero Section banner, trust cards, and the FAQ accordion container.</p>
+</div>
+
+<div class="file-item">
+  <div class="file-path">css/forms.css</div>
+  <p>Formats medical input forms into clean 2-column grids with Clinical Teal focus highlights, validation error text, and filter bars.</p>
+</div>
+
+<div class="file-item">
+  <div class="file-path">css/tables.css</div>
+  <p>Provides healthcare tabular formatting with row hovers, urgency tags (<code>.urgency-critical</code>), and status pills (<code>.status-available</code> in Soft Mint).</p>
+</div>
+
+<div class="file-item">
+  <div class="file-path">js/main.js</div>
+  <p>Vanilla JavaScript controlling auto-dismissing flash alerts and the animated, smooth FAQ accordion expansion/collapse.</p>
+</div>
+
+<h3>2. JSP Views (`src/main/webapp/WEB-INF/views/`)</h3>
+
+<div class="file-item">
+  <div class="file-path">common/header.jsp, navbar.jsp, footer.jsp</div>
+  <p>Modular layout templates. <code>navbar.jsp</code> renders dynamic links based on user role; <code>footer.jsp</code> displays the 4-column layout including GNIMS college details, department, tech stack, and team members.</p>
+</div>
+
+<div class="file-item">
+  <div class="file-path">donor/available-donors.jsp (Main Landing Page)</div>
+  <p>The core landing view featuring: (1) The Medical Hero Section with trust badges and CTA buttons; (2) The Donor Search Directory with telephone and email omitted to safeguard donor privacy; (3) The Smooth FAQ Accordion.</p>
+</div>
+
+<div class="file-item">
+  <div class="file-path">auth/login.jsp & register.jsp</div>
+  <p>Clean authentication forms featuring demo admin credential helpers and dynamic blood group dropdown selection.</p>
+</div>
+
+<div class="file-item">
+  <div class="file-path">donor/dashboard.jsp & profile.jsp</div>
+  <p>Donor portal displaying blood group badges, last donation records, and the interactive live availability switch.</p>
+</div>
+
+<div class="file-item">
+  <div class="file-path">requests/list.jsp, create.jsp, details.jsp, update-status.jsp</div>
+  <p>Hospital blood requisition screens for submitting emergencies, monitoring patient urgency, and updating fulfillment states.</p>
+</div>
+
+<div class="file-item">
+  <div class="file-path">donations/list.jsp, create.jsp, details.jsp, my-history.jsp, donor-history.jsp</div>
+  <p>Clinical donation screens allowing administrators to log verified donations and donors to review personal donation certificates.</p>
+</div>
+
+<div class="file-item">
+  <div class="file-path">admin/dashboard.jsp & user-details.jsp</div>
+  <p>Administrative management console displaying system KPI counters (Total Donors, Available Donors, Requests, Donations) and account standing toggles.</p>
+</div>
+
+<div class="file-item">
+  <div class="file-path">blood-groups/list.jsp & details.jsp</div>
+  <p>Visual directory of the 8 supported blood groups with direct search links.</p>
+</div>
+
+</body>
+</html>

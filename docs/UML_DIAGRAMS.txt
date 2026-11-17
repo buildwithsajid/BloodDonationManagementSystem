@@ -1,0 +1,665 @@
+================================================================================
+          BLOOD DONATION MANAGEMENT SYSTEM (BDMS) - UML & DFD DIAGRAMS
+              Course: Advanced Java (MCA / IT Mini Project)
+                 Institution: GNIMS, Matunga, Mumbai
+================================================================================
+
+This document contains standardized, professional diagrams for BDMS:
+  1. Use Case Diagram (Actors, Use Cases, Boundaries)
+  2. Class Diagram (Entities, DTOs, Controllers, Services, Repositories)
+  3. Sequence Diagrams (Registration, Request Creation, Donation Recording)
+  4. Data Flow Diagrams (DFD Level 0, Level 1, Level 2 Decomposition)
+  5. Entity-Relationship (ER) Diagram (Tables, Keys, Cardinalities)
+
+Each diagram is presented in both:
+  A) Pure ASCII Text Art (Readable in any text editor/Notepad)
+  B) Standard Mermaid.js Code (For direct rendering in Markdown, GitHub, or Mermaid Live)
+Followed by a comprehensive technical explanation.
+
+================================================================================
+1. USE CASE DIAGRAM
+================================================================================
+
+A) ASCII TEXT DIAGRAM:
+
+  +-------------------------------------------------------------------------+
+  |              BLOOD DONATION MANAGEMENT SYSTEM (BOUNDARY)                |
+  |                                                                         |
+  |   (Public / Guest)                                                      |
+  |        |                                                                |
+  |        +--------> [ UC-01: View Available Donors Directory ]            |
+  |        |                                                                |
+  |        +--------> [ UC-02: Search Donors by Blood Group & City ]        |
+  |        |                                                                |
+  |        +--------> [ UC-03: Register Donor Account ]                     |
+  |        |                                                                |
+  |        +--------> [ UC-04: User Authentication / Login ]                |
+  |                                                                         |
+  |   (Registered Donor)                                                    |
+  |        |                                                                |
+  |        +--------> [ UC-05: View Personal Dashboard & Profile ]          |
+  |        |                                                                |
+  |        +--------> [ UC-06: Toggle / Update Donation Availability ]      |
+  |        |                                                                |
+  |        +--------> [ UC-07: View Availability Audit History ]            |
+  |        |                                                                |
+  |        +--------> [ UC-08: View Personal Donation History ]             |
+  |        |                                                                |
+  |        +--------> [ UC-09: Browse Open Blood Requests ]                 |
+  |                                                                         |
+  |   (System Administrator)                                                |
+  |        |                                                                |
+  |        +--------> [ UC-10: View Admin Console & Summary Metrics ]       |
+  |        |                                                                |
+  |        +--------> [ UC-11: Create Emergency Blood Request ]             |
+  |        |                                                                |
+  |        +--------> [ UC-12: Update Blood Request Status (Pending->Done)] |
+  |        |                                                                |
+  |        +--------> [ UC-13: Record Verified Blood Donation ]             |
+  |        |                 \                                              |
+  |        |                  \--<<include>>--> [ Update Donor Last Date ]  |
+  |        |                                                                |
+  |        +--------> [ UC-14: View & Filter All System Donations ]         |
+  |        |                                                                |
+  |        +--------> [ UC-15: Manage User Account Status (Active/Inactive)]|
+  |        |                                                                |
+  |        +--------> [ UC-16: Browse Blood Groups Lookup Table ]           |
+  |                                                                         |
+  +-------------------------------------------------------------------------+
+
+B) MERMAID.JS SYNTAX:
+```mermaid
+graph LR
+    Guest((Guest / Public))
+    Donor((Registered Donor))
+    Admin((Administrator))
+
+    subgraph "Blood Donation Management System"
+        UC1["UC-01: View Available Donors"]
+        UC2["UC-02: Search by Group & City"]
+        UC3["UC-03: Register Donor Account"]
+        UC4["UC-04: User Login / Logout"]
+        UC5["UC-05: View Donor Dashboard"]
+        UC6["UC-06: Update Availability Status"]
+        UC7["UC-07: View Availability Log"]
+        UC8["UC-08: View Personal Donations"]
+        UC9["UC-09: Browse Blood Requests"]
+        UC10["UC-10: View Admin Console & Stats"]
+        UC11["UC-11: Create Blood Request"]
+        UC12["UC-12: Update Request Status"]
+        UC13["UC-13: Record Blood Donation"]
+        UC14["UC-14: Audit All Donations"]
+        UC15["UC-15: Manage User Account Status"]
+        UC16["UC-16: Browse Blood Groups"]
+        UC17["Update Donor Last Date"]
+    end
+
+    Guest --> UC1
+    Guest --> UC2
+    Guest --> UC3
+    Guest --> UC4
+
+    Donor --> UC4
+    Donor --> UC5
+    Donor --> UC6
+    Donor --> UC7
+    Donor --> UC8
+    Donor --> UC9
+
+    Admin --> UC4
+    Admin --> UC10
+    Admin --> UC11
+    Admin --> UC12
+    Admin --> UC13
+    Admin --> UC14
+    Admin --> UC15
+    Admin --> UC16
+    UC13 -.->|<<include>>| UC17
+```
+
+EXPLANATION OF USE CASE DIAGRAM:
+1. Primary Actors:
+   - Guest / Public Visitor: Unauthenticated user who can browse the hospital donor directory, filter donors by ABO/Rh group and city, and initiate registration. Sensitive PII (phone/email) is shielded.
+   - Registered Donor: Authenticated user with role `DONOR`. Can access their personal dashboard, toggle availability between Available and Unavailable, view their status change audit trail, and inspect verified past donations.
+   - System Administrator: Authenticated staff member with role `ADMIN`. Governs clinical operations, records emergency blood requisitions, moves requests through their lifecycle (`PENDING` -> `IN_PROGRESS` -> `FULFILLED`), records completed blood collections, and activates/deactivates accounts.
+2. Relationships & Includes:
+   - "Record Blood Donation" (UC-13) unconditionally includes "Update Donor Last Date" (UC-17) because logging a donation automatically updates the donor's eligibility and last donation timestamp.
+
+
+================================================================================
+2. CLASS DIAGRAM
+================================================================================
+
+A) ASCII TEXT DIAGRAM:
+
+ +--------------------------------+         +-------------------------------+
+ |             User               | 1     1 |             Donor             |
+ +--------------------------------+<--------+-------------------------------+
+ | - userId: Long                 |         | - donorId: Long               |
+ | - fullName: String             |         | - dateOfBirth: LocalDate      |
+ | - email: String                |         | - phone: String               |
+ | - password: String (BCrypt)    |         | - gender: String              |
+ | - role: UserRole               |         | - city: String                |
+ | - accountStatus: AccountStatus |         | - area: String                |
+ | - createdAt: LocalDateTime     |         | - lastDonationDate: LocalDate |
+ +--------------------------------+         | - availability: Boolean       |
+                                            | - createdAt: LocalDateTime    |
+                                            +---------------+---------------+
+                                                            | N
+                                                            |
+                                                            | 1
+                                            +---------------+---------------+
+                                            |          BloodGroup           |
+                                            +-------------------------------+
+                                            | - bloodGroupId: Long          |
+                                            | - groupName: String           |
+                                            +-------------------------------+
+                                                    ^               ^
+                                                    | 1             | 1
+                                                    |               |
+                                                    | N             | N
+ +--------------------------------+         +-------+-------+  +----+-------+
+ |        DonationHistory         |         |  BloodRequest |  | DonorAvail |
+ +--------------------------------+         +---------------+  |   History  |
+ | - donationId: Long             |         | - requestId   |  +------------+
+ | - donor: Donor (FK)            |         | - patientName |  | - historyId|
+ | - donationDate: LocalDate      |         | - bloodGroup  |  | - donor(FK)|
+ | - donationLocation: String     |         | - unitsReq    |  | - prevStat |
+ | - remarks: String              |         | - hospital    |  | - newStat  |
+ | - recordedBy: User (FK)        |         | - urgency     |  | - updatedAt|
+ +--------------------------------+         | - status      |  | - updatedBy|
+                                            | - createdBy   |  +------------+
+                                            +---------------+
+
+B) MERMAID.JS SYNTAX:
+```mermaid
+classDiagram
+    class User {
+        -Long userId
+        -String fullName
+        -String email
+        -String password
+        -UserRole role
+        -AccountStatus accountStatus
+        -LocalDateTime createdAt
+    }
+
+    class Donor {
+        -Long donorId
+        -User user
+        -BloodGroup bloodGroup
+        -LocalDate dateOfBirth
+        -String phone
+        -String gender
+        -String city
+        -String area
+        -LocalDate lastDonationDate
+        -Boolean availability
+        -LocalDateTime createdAt
+    }
+
+    class BloodGroup {
+        -Long bloodGroupId
+        -String groupName
+    }
+
+    class DonationHistory {
+        -Long donationId
+        -Donor donor
+        -LocalDate donationDate
+        -String donationLocation
+        -String remarks
+        -User recordedBy
+    }
+
+    class BloodRequest {
+        -Long requestId
+        -String patientName
+        -String contactNumber
+        -BloodGroup bloodGroup
+        -Integer unitsRequired
+        -String hospitalName
+        -String city
+        -UrgencyLevel urgency
+        -RequestStatus status
+        -LocalDateTime requestDate
+        -LocalDateTime requiredBy
+        -User createdBy
+    }
+
+    class DonorAvailabilityHistory {
+        -Long historyId
+        -Donor donor
+        -Boolean previousStatus
+        -Boolean newStatus
+        -LocalDateTime updatedAt
+        -User updatedBy
+    }
+
+    User "1" <-- "1" Donor : user_id
+    BloodGroup "1" <-- "*" Donor : blood_group_id
+    Donor "1" <-- "*" DonationHistory : donor_id
+    User "1" <-- "*" DonationHistory : recorded_by
+    BloodGroup "1" <-- "*" BloodRequest : blood_group_id
+    User "1" <-- "*" BloodRequest : created_by
+    Donor "1" <-- "*" DonorAvailabilityHistory : donor_id
+    User "1" <-- "*" DonorAvailabilityHistory : updated_by
+```
+
+EXPLANATION OF CLASS DIAGRAM:
+1. Architecture Layers:
+   - Entity Layer: Represents persistent database tables mapped with JPA annotations (`@Entity`, `@Table`, `@Id`, `@ManyToOne`, `@OneToOne`).
+   - Repository Layer: Spring Data JPA interfaces (`DonorRepository`, `BloodRequestRepository`, etc.) extending `JpaRepository` with custom `@EntityGraph` definitions to eliminate N+1 queries.
+   - Service Layer: Business logic interfaces and implementations (`DonorServiceImpl`, `DonationHistoryServiceImpl`, etc.) governed by `@Transactional`.
+   - Controller Layer: Spring MVC controllers handling HTTP requests, performing session verification, populating UI models, and dispatching to JSP views.
+2. Core Relationships:
+   - `User` to `Donor`: One-to-One (`1:1`). Every donor profile corresponds to exactly one login credential.
+   - `BloodGroup` to `Donor`: One-to-Many (`1:N`). Many donors share one standardized blood group entity (A+, B+, etc.).
+   - `Donor` to `DonationHistory`: One-to-Many (`1:N`). A single donor can have a rich chronological record of past donations.
+   - `Donor` to `DonorAvailabilityHistory`: One-to-Many (`1:N`). Every availability toggle is immutably logged for audit purposes.
+   - `BloodRequest` to `BloodGroup` and `User`: Many-to-One (`N:1`). Requests reference the demanded blood group and the administrator who created the request.
+
+
+================================================================================
+3. SEQUENCE DIAGRAMS
+================================================================================
+
+--- 3.1: DONOR REGISTRATION SEQUENCE ---
+
+A) ASCII TEXT DIAGRAM:
+
+  User/Browser         AuthController      DonorService       UserService    Database (MySQL)
+       |                     |                  |                  |                |
+  (1)  |-- POST /register -->|                  |                  |                |
+       |   (Donor Details)   |                  |                  |                |
+  (2)  |                     |-- registerDonor->|                  |                |
+       |                     |                  |-- registerUser ->|                |
+  (3)  |                     |                  |                  |-- BCrypt hash -|
+       |                     |                  |                  |-- INSERT User->|
+  (4)  |                     |                  |                  |<-- User Saved -|
+       |                     |                  |<-- User Account -|                |
+  (5)  |                     |                  |-- Set User & BloodGroup           |
+       |                     |                  |-- INSERT Donor ------------------>|
+  (6)  |                     |                  |<-- Donor Profile Saved -----------|
+  (7)  |                     |<-- Return Donor -|                  |                |
+  (8)  |<-- 302 Redirect ----|                  |                  |                |
+       |    to /login        |                  |                  |                |
+
+B) MERMAID.JS SYNTAX:
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client as Donor / Browser
+    participant AC as AuthController
+    participant DS as DonorServiceImpl
+    participant US as UserServiceImpl
+    participant DB as MySQL Database
+
+    Client->>AC: POST /register (RegisterDonorRequest DTO)
+    AC->>DS: registerDonor(Donor donor)
+    DS->>US: registerDonorAccount(User user)
+    Note over US: Hash plain password via BCrypt
+    US->>DB: INSERT INTO users (full_name, email, password, role='DONOR')
+    DB-->>US: User Entity Saved (userId)
+    US-->>DS: Return Saved User
+    Note over DS: Associate BloodGroup & Default Availability (true)
+    DS->>DB: INSERT INTO donors (user_id, blood_group_id, phone, city)
+    DB-->>DS: Donor Entity Saved (donorId)
+    DS-->>AC: Return Registered Donor
+    AC-->>Client: 302 Redirect to /login (Flash: "Registration successful")
+```
+
+--- 3.2: EMERGENCY BLOOD REQUEST CREATION & STATUS TRANSITION ---
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Admin as System Administrator
+    participant BRC as BloodRequestController
+    participant BRS as BloodRequestServiceImpl
+    participant DB as MySQL Database
+
+    Admin->>BRC: POST /blood-requests/create (Form Data)
+    Note over BRC: Verify Active Admin Session
+    BRC->>BRS: createBloodRequest(BloodRequest, adminUserId)
+    Note over BRS: Validate Units (>0), Hospital, City, Group
+    BRS->>DB: INSERT INTO blood_requests (status='PENDING', urgency=CRITICAL/NORMAL)
+    DB-->>BRS: Saved Request
+    BRS-->>BRC: Return BloodRequest
+    BRC-->>Admin: 302 Redirect to /blood-requests
+
+    Admin->>BRC: POST /blood-requests/{id}/status (status='FULFILLED')
+    BRC->>BRS: updateBloodRequestStatus(requestId, FULFILLED, adminUserId)
+    Note over BRS: Validate State Transition (PENDING -> FULFILLED)
+    BRS->>DB: UPDATE blood_requests SET status='FULFILLED' WHERE request_id=id
+    DB-->>BRS: Update Successful
+    BRS-->>BRC: Return Updated Request
+    BRC-->>Admin: 302 Redirect to /blood-requests/{id} (Success Alert)
+```
+
+--- 3.3: RECORDING VERIFIED BLOOD DONATION ---
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Admin as System Administrator
+    participant DHC as DonationHistoryController
+    participant DHS as DonationHistoryServiceImpl
+    participant DB as MySQL Database
+
+    Admin->>DHC: POST /donations/create (donorId, date, location, remarks)
+    DHC->>DHS: recordDonation(DonationHistory, adminUserId)
+    Note over DHS: Verify Admin Role & Validate Future Dates
+    DHS->>DB: SELECT donor WHERE donor_id = id
+    DB-->>DHS: Return Donor Entity
+    Note over DHS: Check date not before previous donation
+    DHS->>DB: INSERT INTO donation_history (donor_id, donation_date, location)
+    DB-->>DHS: Saved DonationHistory
+    Note over DHS: Update Donor's lastDonationDate
+    DHS->>DB: UPDATE donors SET last_donation_date = donation_date
+    DB-->>DHS: Donor Updated
+    DHS-->>DHC: Return Saved Record
+    DHC-->>Admin: 302 Redirect to /donations (Success Flash Message)
+```
+
+
+================================================================================
+4. DATA FLOW DIAGRAMS (DFD)
+================================================================================
+
+--- 4.1: DFD LEVEL 0 (CONTEXT DIAGRAM) ---
+
+A) ASCII TEXT DIAGRAM:
+
+             +-----------------------------------------+
+             |                                         |
+             |  Registration, Login, Availability Data |
+             v                                         |
+     +---------------+                        +------------------+
+     |               |                        |                  |
+     |     DONOR     |                        |  ADMINISTRATOR   |
+     |               |                        |                  |
+     +-------+-------+                        +--------+---------+
+             |                                         ^
+             | Search Queries, View Profile            | Requisitions,
+             |                                         | Verified Donations
+             v                                         |
+     +-------------------------------------------------+-----------------+
+     |                                                                   |
+     |             0.0 BLOOD DONATION MANAGEMENT SYSTEM (BDMS)           |
+     |                                                                   |
+     +-------------------------------------------------+-----------------+
+             ^                                         |
+             | Search Filters (Blood Group, City)      |
+             |                                         | Matching Donor Directory
+             v                                         v
+     +---------------+                        +------------------+
+     |    PUBLIC/    |                        |    HOSPITALS/    |
+     |    PATIENT    |                        |    RECIPIENTS    |
+     +---------------+                        +------------------+
+
+B) MERMAID.JS SYNTAX:
+```mermaid
+graph TD
+    Donor["Donor"]
+    Admin["System Administrator"]
+    Public["Public / Patient"]
+    System(("0.0 Blood Donation<br/>Management System<br/>(BDMS)"))
+
+    Donor -->|Registration & Login| System
+    Donor -->|Update Availability| System
+    System -->|Profile & Donation Records| Donor
+
+    Admin -->|Login Credentials| System
+    Admin -->|Emergency Blood Requisitions| System
+    Admin -->|Verified Donation Entries| System
+    Admin -->|Account Status Toggles| System
+    System -->|System KPIs & Metrics| Admin
+
+    Public -->|Search Query Group, City| System
+    System -->|Available Donor Directory Phone/Email Protected| Public
+```
+
+--- 4.2: DFD LEVEL 1 (FUNCTIONAL DECOMPOSITION) ---
+
+```mermaid
+graph TD
+    Donor["Donor"]
+    Admin["Administrator"]
+    Public["Public / Recipient"]
+
+    P1(("1.0 Authentication<br/>& User Management"))
+    P2(("2.0 Donor Profile<br/>& Availability Engine"))
+    P3(("3.0 Blood Search<br/>& Requisition Engine"))
+    P4(("4.0 Donation Recording<br/>& History Ledger"))
+
+    D1[("D1: Users Store")]
+    D2[("D2: Donors Store")]
+    D3[("D3: Blood Groups Store")]
+    D4[("D4: Blood Requests Store")]
+    D5[("D5: Donation History Store")]
+    D6[("D6: Availability History Store")]
+
+    Donor -->|Register / Credentials| P1
+    Admin -->|Manage Accounts| P1
+    P1 <-->|Read / Write Auth| D1
+
+    Donor -->|Toggle Status| P2
+    P2 <-->|Fetch / Update Profile| D2
+    P2 -->|Write Audit Entry| D6
+
+    Public -->|Search Filter: Group, City| P3
+    Admin -->|Create / Update Request| P3
+    P3 <-->|Query Available Donors| D2
+    P3 <-->|Validate Group| D3
+    P3 <-->|Save / Update Request| D4
+
+    Admin -->|Record Donation| P4
+    P4 -->|Insert Record| D5
+    P4 -->|Update lastDonationDate| D2
+```
+
+--- 4.3: DFD LEVEL 2 (SUB-SYSTEM BREAKDOWN) ---
+
+Sub-system 2.1: Donor Management & Availability Flow
+```mermaid
+graph TD
+    Donor["Donor Entity"]
+    P21(("2.1 Validate Status Change"))
+    P22(("2.2 Update Active Availability"))
+    P23(("2.3 Log Immutable Audit Trail"))
+    D2[("D2: Donors Store")]
+    D6[("D6: Availability History Store")]
+
+    Donor -->|New Availability Flag| P21
+    P21 -->|Verified Donor ID| P22
+    P22 -->|Update availability column| D2
+    P22 -->|Previous & New Status Data| P23
+    P23 -->|Insert History Row with Timestamp & Actor| D6
+```
+
+Sub-system 2.2: Blood Requisition & Search Matching Flow
+```mermaid
+graph TD
+    Client["Client / Hospital"]
+    P31(("3.1 Parse Search Filters"))
+    P32(("3.2 Execute Query on Availability=True"))
+    P33(("3.3 Apply PII Privacy Shield"))
+    D2[("D2: Donors Store")]
+    D3[("D3: Blood Groups Store")]
+
+    Client -->|Blood Group & City Input| P31
+    P31 -->|Resolved Blood Group ID| D3
+    P31 -->|Criteria Object| P32
+    P32 <-->|Fetch Matching Records| D2
+    P32 -->|Raw Donor Data| P33
+    P33 -->|Mask Phone & Email, Emit Clean DTO| Client
+```
+
+Sub-system 2.3: Donation Recording Flow
+```mermaid
+graph TD
+    Admin["Administrator"]
+    P41(("4.1 Verify Admin Authority"))
+    P42(("4.2 Validate Eligibility & Dates"))
+    P43(("4.3 Commit Donation Record"))
+    P44(("4.4 Refresh Donor Eligibility Date"))
+    D1[("D1: Users Store")]
+    D2[("D2: Donors Store")]
+    D5[("D5: Donation History Store")]
+
+    Admin -->|Donation Payload| P41
+    P41 <-->|Verify Role=ADMIN| D1
+    P41 -->|Authorized Payload| P42
+    P42 <-->|Check Prior Donation Date| D2
+    P42 -->|Validated Transaction| P43
+    P43 -->|Insert Donation Row| D5
+    P43 -->|Trigger Date Refresh| P44
+    P44 -->|Update last_donation_date| D2
+```
+
+
+================================================================================
+5. ENTITY-RELATIONSHIP (ER) DIAGRAM
+================================================================================
+
+A) ASCII TEXT DIAGRAM:
+
+  +-----------------------+                    +-------------------------+
+  |         users         | 1                1 |         donors          |
+  +-----------------------+--------------------+-------------------------+
+  | PK  user_id           |<-------------------| FK  user_id             |
+  |     full_name         |                    | PK  donor_id            |
+  |     email (UQ)        |                    | FK  blood_group_id      |
+  |     password          |                    |     date_of_birth       |
+  |     role              |                    |     phone               |
+  |     account_status    |                    |     gender              |
+  |     created_at        |                    |     city                |
+  +-----------+-----------+                    |     area                |
+              | 1                              |     last_donation_date  |
+              |                                |     availability        |
+              |                                |     created_at          |
+              |                                +------+------------+-----+
+              |                                       | 1          | 1
+              |                                       |            |
+              | N                                     | N          | N
+  +-----------v-----------+                    +------v----+  +----v-----+
+  |    blood_requests     |                    |  donation |  | donor_   |
+  +-----------------------+                    |  _history |  | avail_   |
+  | PK  request_id        |                    +-----------+  | history  |
+  | FK  created_by        |                    | PK don_id |  +----------+
+  | FK  blood_group_id    |                    | FK donor_ |  | PK hist_ |
+  |     patient_name      |                    |    id     |  |    id    |
+  |     contact_number    |                    |    date   |  | FK donor_|
+  |     units_required    |                    |    loc    |  |    id    |
+  |     hospital_name     |                    |    rem    |  |    prev  |
+  |     city              |                    | FK rec_by |  |    new   |
+  |     urgency           |                    +-----------+  |    time  |
+  |     status            |                          ^        | FK upd_by|
+  |     request_date      |                          |        +----+-----+
+  |     required_by       |                          |             |
+  +-----------+-----------+                          +-------+-----+
+              | N                                            |
+              |                                              |
+              | 1                                            |
+  +-----------v-----------+                                  |
+  |     blood_groups      |                                  |
+  +-----------------------+                                  |
+  | PK  blood_group_id    |<---------------------------------+
+  |     group_name (UQ)   |
+  +-----------------------+
+
+B) MERMAID.JS SYNTAX:
+```mermaid
+erDiagram
+    USERS ||--|| DONORS : "has profile"
+    BLOOD_GROUPS ||--o{ DONORS : "categorizes"
+    DONORS ||--o{ DONATION_HISTORY : "donates"
+    USERS ||--o{ DONATION_HISTORY : "records"
+    BLOOD_GROUPS ||--o{ BLOOD_REQUESTS : "demanded in"
+    USERS ||--o{ BLOOD_REQUESTS : "created by"
+    DONORS ||--o{ DONOR_AVAILABILITY_HISTORY : "audits"
+    USERS ||--o{ DONOR_AVAILABILITY_HISTORY : "updated by"
+
+    USERS {
+        bigint user_id PK
+        varchar full_name
+        varchar email UK
+        varchar password
+        varchar role
+        varchar account_status
+        datetime created_at
+    }
+
+    BLOOD_GROUPS {
+        bigint blood_group_id PK
+        varchar group_name UK
+    }
+
+    DONORS {
+        bigint donor_id PK
+        bigint user_id FK,UK
+        bigint blood_group_id FK
+        date date_of_birth
+        varchar phone
+        varchar gender
+        varchar city
+        varchar area
+        date last_donation_date
+        boolean availability
+        datetime created_at
+    }
+
+    DONATION_HISTORY {
+        bigint donation_id PK
+        bigint donor_id FK
+        date donation_date
+        varchar donation_location
+        varchar remarks
+        bigint recorded_by FK
+    }
+
+    BLOOD_REQUESTS {
+        bigint request_id PK
+        varchar patient_name
+        varchar contact_number
+        bigint blood_group_id FK
+        int units_required
+        varchar hospital_name
+        varchar city
+        varchar urgency
+        varchar status
+        datetime request_date
+        datetime required_by
+        bigint created_by FK
+    }
+
+    DONOR_AVAILABILITY_HISTORY {
+        bigint history_id PK
+        bigint donor_id FK
+        boolean previous_status
+        boolean new_status
+        datetime updated_at
+        bigint updated_by FK
+    }
+```
+
+EXPLANATION OF ER DIAGRAM:
+1. Tables & Keys:
+   - `users`: Stores login identities for both Admins and Donors. Primary key is `user_id`. `email` has a unique index (`uq_users_email`).
+   - `blood_groups`: Master lookup table with 8 rows (`A+`, `A-`, `B+`, `B-`, `AB+`, `AB-`, `O+`, `O-`). Primary key is `blood_group_id`.
+   - `donors`: Core medical entity. Foreign key `user_id` is unique (`uq_donors_user_id`), enforcing a strict 1-to-1 relationship with `users`. Foreign key `blood_group_id` links to `blood_groups`. Composite index `idx_donors_search (blood_group_id, city, availability)` ensures millisecond search speeds.
+   - `donation_history`: Child table of `donors`. Stores verified donation events. Foreign keys link to `donors.donor_id` and `users.user_id` (`recorded_by`).
+   - `blood_requests`: Requisitions created by healthcare facilities and administrators. Foreign keys link to `blood_groups.blood_group_id` and `users.user_id` (`created_by`).
+   - `donor_availability_history`: Append-only audit table capturing the before and after state whenever a donor flips their availability flag.
+2. Cardinalities:
+   - `users` (1) to `donors` (1): Exact One-to-One.
+   - `blood_groups` (1) to `donors` (N): One-to-Many.
+   - `blood_groups` (1) to `blood_requests` (N): One-to-Many.
+   - `donors` (1) to `donation_history` (N): One-to-Many.
+   - `users` (1) to `donation_history` (N): One-to-Many (Recorded By).
+   - `donors` (1) to `donor_availability_history` (N): One-to-Many.
+
+================================================================================
+END OF UML & DFD DIAGRAM DOCUMENTATION
+================================================================================
