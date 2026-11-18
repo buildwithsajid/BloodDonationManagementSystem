@@ -12,7 +12,7 @@
             <h4>Tech Stack Used</h4>
             <ul>
                 <li><strong>Backend:</strong> Java 21, Spring Boot 4</li>
-                <li><strong>Database:</strong> Spring Data JPA, MySQL 8</li>
+                <li><strong>Database:</strong> Spring Data JPA, PostgreSQL (Neon)</li>
                 <li><strong>Frontend:</strong> JSP, JSTL, HTML5</li>
                 <li><strong>Styling & Logic:</strong> Vanilla CSS & JS</li>
             </ul>

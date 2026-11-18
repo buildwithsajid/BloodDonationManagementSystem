@@ -1,0 +1,75 @@
+TC01	Public	Home page redirects to donor search	302 to /donors/available	302 /donors/available	PASS
+TC02	Public	Donor search lists all available donors	HTTP 200, at least 24 donor rows	HTTP 200, 24 rows	PASS
+TC03	Public	Filter donors by blood group O+	HTTP 200, 3 or more O+ rows	HTTP 200, 3 rows	PASS
+TC04	Public	Filter donors by city (Pune)	HTTP 200, Pune donors listed	HTTP 200, 6 rows	PASS
+TC05	Public	Combined filter city + blood group	HTTP 200, 1 to 3 Mumbai A+ rows	HTTP 200, 1 rows	PASS
+TC06	Public	Search with no matching city	HTTP 200, 0 rows (empty state)	HTTP 200, 0 rows	PASS
+TC07	Public	Blood groups page shows the 8 groups	HTTP 200, 8 groups	HTTP 200, 8 groups	PASS
+TC08	Public	Blood group details page	HTTP 200	HTTP 200	PASS
+TC09	Public	Open blood requests list is public	HTTP 200	HTTP 200	PASS
+TC10	Public	Blood request search by city	HTTP 200	HTTP 200	PASS
+TC11	Public	Registration page loads with blood group options	HTTP 200, form present	HTTP 200	PASS
+TC12	Public	Static CSS served	HTTP 200	HTTP 200	PASS
+TC13	Authentication	Login with wrong password is rejected	Stay on login, Invalid email or password	HTTP 200	PASS
+TC14	Authentication	Login with unknown email is rejected	Invalid email or password	HTTP 200	PASS
+TC15	Authentication	Login with empty fields is rejected	Stay on login page (no redirect)	HTTP 200	PASS
+TC16	Authentication	Admin login succeeds	302 to /admin/dashboard	302 /admin/dashboard	PASS
+TC17	Registration	Register new donor with valid data	Redirect to login with success message	HTTP 200	PASS
+TC18	Registration	Duplicate email is rejected	Error: account with this email already exists	HTTP 200	PASS
+TC19	Registration	Password shorter than 8 characters is rejected	Form re-displayed, no account created	HTTP 200	PASS
+TC20	Registration	Invalid phone number is rejected	Form re-displayed, no account created	HTTP 200	PASS
+TC21	Registration	Future date of birth is rejected	Form re-displayed, no account created	HTTP 200	PASS
+TC22	Registration	Invalid email format is rejected	Form re-displayed, no account created	HTTP 200	PASS
+TC23	Donor	New donor can log in	302 to /donor/dashboard	302 /donor/dashboard	PASS
+TC24	Donor	Donor dashboard shows own name	HTTP 200 with donor name	HTTP 200	PASS
+TC25	Donor	Donor profile page loads	HTTP 200	HTTP 200	PASS
+TC26	Donor	Donor marks self unavailable	Success message shown	HTTP 200	PASS
+TC27	Donor	Setting the same availability again is blocked	Error: already set	HTTP 200	PASS
+TC28	Donor	Donor marks self available again	Success message shown	HTTP 200	PASS
+TC29	Donor	Donor sees own availability history	HTTP 200	HTTP 200	PASS
+TC30	Donor	Donor donation history page loads	HTTP 200	HTTP 200	PASS
+TC31	Authorization	Anonymous user blocked from /admin/dashboard	302 to /login	302 /login	PASS
+TC32	Authorization	Anonymous user blocked from /donations	302 to /login	302 /login	PASS
+TC33	Authorization	Anonymous user blocked from /donations/create	302 to /login	302 /login	PASS
+TC34	Authorization	Anonymous user blocked from /blood-requests/create	302 to /login	302 /login	PASS
+TC35	Authorization	Anonymous user blocked from /donor/dashboard	302 to /login	302 /login	PASS
+TC36	Authorization	Anonymous user blocked from /donor/profile	302 to /login	302 /login	PASS
+TC37	Authorization	Anonymous user blocked from /donations/my-history	302 to /login	302 /login	PASS
+TC38	Authorization	Donor blocked from admin page /admin/dashboard	302 to /login	302 /login	PASS
+TC39	Authorization	Donor blocked from admin page /donations	302 to /login	302 /login	PASS
+TC40	Authorization	Donor blocked from admin page /donations/create	302 to /login	302 /login	PASS
+TC41	Authorization	Donor blocked from admin page /blood-requests/create	302 to /login	302 /login	PASS
+TC42	Authorization	Admin blocked from donor dashboard	302 to /login	302 /login	PASS
+TC43	Authorization	Anonymous cannot change request status	302 to /login	302 /login	PASS
+TC44	Admin	Admin dashboard loads with statistics	HTTP 200, Administrator Console	HTTP 200	PASS
+TC45	Admin	Create blood request with valid data	Success message, request in open list	HTTP 200	PASS
+TC46	Admin	New request appears in the public open requests list	Patient visible in list	request id=6	PASS
+TC47	Admin	Request with invalid contact number rejected	Form re-displayed, nothing created	HTTP 200	PASS
+TC48	Admin	Request with 0 units rejected	Form re-displayed, nothing created	HTTP 200	PASS
+TC49	Admin	Request with required-by date in the past rejected	Error: cannot be in the past	HTTP 200	PASS
+TC50	Admin	Request details page	HTTP 200	HTTP 200	PASS
+TC51	Admin	Status PENDING to PENDING blocked	Error: already has the status	HTTP 200	PASS
+TC52	Admin	Status PENDING to IN_PROGRESS allowed	Success message	HTTP 200	PASS
+TC53	Admin	Status IN_PROGRESS to PENDING blocked	Error: Invalid request status transition	HTTP 200	PASS
+TC54	Admin	Status IN_PROGRESS to FULFILLED allowed	Success message	HTTP 200	PASS
+TC55	Admin	Fulfilled request cannot be changed	Error: cannot be changed	HTTP 200	PASS
+TC56	Admin	Fulfilled request removed from open list	Patient not in open list	HTTP 200	PASS
+TC57	Admin	Locate registered test donor in admin views	donor id and user id found	donor=33 user=34	PASS
+TC58	Admin	Record donation with valid data	Success message	HTTP 200	PASS
+TC59	Admin	Donation earlier than previous donation rejected	Error: earlier than	HTTP 200	PASS
+TC60	Admin	Donation dated in the future rejected	Form re-displayed, nothing saved	HTTP 200	PASS
+TC61	Admin	Donation for non-existent donor rejected	Error: Donor not found	HTTP 200	PASS
+TC62	Admin	All donations list loads	HTTP 200	HTTP 200	PASS
+TC63	Admin	Donation history of a donor shows new donation	HTTP 200, location visible	HTTP 200	PASS
+TC64	Admin	Admin views donor availability audit trail	HTTP 200	HTTP 200	PASS
+TC65	Admin	Admin views user account details	HTTP 200, email visible	HTTP 200	PASS
+TC66	Admin	Admin cannot deactivate own account	Error message	HTTP 200	PASS
+TC67	Admin	Admin deactivates a donor account	Success message	HTTP 200	PASS
+TC68	Admin	Deactivated donor can no longer log in	Login rejected	HTTP 200	PASS
+TC69	Admin	Admin reactivates the donor account	Success message	HTTP 200	PASS
+TC70	Admin	Reactivated donor can log in again	302 to /donor/dashboard	302 /donor/dashboard	PASS
+TC71	Donor	Donor sees own recorded donation	Location visible	HTTP 200	PASS
+TC72	Donor	Donor opens own donation certificate	HTTP 200	HTTP 200	PASS
+TC73	Donor	Donor cannot open another donor donation	302 to /donations/my-history	302 /donations/my-history	PASS
+TC74	Session	Logout redirects to login	302 to /login	302 /login	PASS
+TC75	Session	Dashboard blocked after logout	302 to /login	302 /login	PASS
