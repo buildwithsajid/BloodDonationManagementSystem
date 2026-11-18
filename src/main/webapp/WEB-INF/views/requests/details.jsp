@@ -91,7 +91,7 @@
 
                 <div class="info-item">
                     <span class="info-label">Recorded By Administrator</span>
-                    <span class="info-value">${bloodRequest.creatorName} (ID: ${bloodRequest.creatorUserId})</span>
+                    <span class="info-value">${bloodRequest.createdByName} (ID: ${bloodRequest.createdByUserId})</span>
                 </div>
             </div>
         </div>
