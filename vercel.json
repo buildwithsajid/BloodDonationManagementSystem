@@ -2,6 +2,6 @@
   "version": 2,
   "framework": null,
   "rewrites": [
-    { "source": "/(.*)", "destination": "https://YOUR-JAVA-APP.onrender.com/$1" }
+    { "source": "/(.*)", "destination": "https://bdms-57ba.onrender.com/$1" }
   ]
 }
