@@ -102,3 +102,12 @@ BloodDonationManagementSystem/
 
 Department of Information Technology & Computer Applications  
 **Guru Nanak Institute of Management Studies (GNIMS)**, Matunga, Mumbai - 400019
+
+## Vercel deployment (Node.js version)
+
+The app is also available as a Node.js (Express + EJS) port that runs on Vercel with a Neon PostgreSQL database.
+
+- Code: `api/`, `lib/`, `views/`, `public/`, `vercel.json`
+- Database: run `database/schema-postgres.sql` in the Neon SQL editor
+- Environment variables (Vercel project settings): `DATABASE_URL` (added by the Neon integration) and `SESSION_SECRET` (any long random string)
+- Local run: `npm install && DATABASE_URL=... npm start`

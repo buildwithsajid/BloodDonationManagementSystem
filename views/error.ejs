@@ -1,0 +1,11 @@
+<% var pageTitle = 'Error - BDMS'; %>
+<%- include('common/header', {pageTitle: pageTitle}) %>
+<%- include('common/navbar', {pageTitle: pageTitle}) %>
+<main class="main-container">
+    <div class="empty-state">
+        <div class="empty-state-title">Error <%= code %></div>
+        <p><%= message %></p>
+        <a href="/" class="btn btn-primary btn-sm">Back to Home</a>
+    </div>
+</main>
+<%- include('common/footer', {pageTitle: pageTitle}) %>

@@ -1,0 +1,48 @@
+<% var pageTitle = `Update Status - Request #${bloodRequest.requestId}`; %>
+<%- include('../common/header', {pageTitle: typeof pageTitle!=='undefined'?pageTitle:undefined}) %>
+<%- include('../common/navbar', {pageTitle: typeof pageTitle!=='undefined'?pageTitle:undefined}) %>
+
+<main class="main-container">
+    <div class="form-container narrow">
+        <h2 class="form-title">Update Request Status</h2>
+        <p class="form-subtitle">Modify lifecycle state for request #<%= bloodRequest.requestId %> (<%= bloodRequest.patientName %>)</p>
+
+        <% if (notEmpty(errorMessage)) { %>
+            <div class="alert alert-danger">
+                <span><%= errorMessage %></span>
+                <button type="button" class="alert-close">&times;</button>
+            </div>
+        <% } %>
+
+        <div style="margin-bottom: 20px; padding: 14px; background: #fafbfc; border-radius: 4px; border: 1px solid var(--border-color); font-size: 14px;">
+            <div><strong>Blood Group:</strong> <span class="blood-badge"><%= bloodRequest.bloodGroup %></span></div>
+            <div style="margin-top: 6px;"><strong>Hospital:</strong> <%= bloodRequest.hospitalName %>, <%= bloodRequest.city %></div>
+            <div style="margin-top: 6px;">
+                <strong>Current Status:</strong>
+                <span class="status-pill status-<%= bloodRequest.status.toString().toLowerCase().replace('_', '-') %>">
+                    <%= bloodRequest.status %>
+                </span>
+            </div>
+        </div>
+
+        <form action="/blood-requests/<%= bloodRequest.requestId %>/status" method="post">
+            <div class="form-group">
+                <label class="form-label required" for="status">New Status Transition</label>
+                <select id="status" name="status" class="form-control" required>
+                    <% (requestStatuses||[]).forEach(function(st){ %>
+                        <option value="<%= st %>" <%= bloodRequest.status == st ? 'selected' : '' %>>
+                            <%= st %>
+                        </option>
+                    <% }); %>
+                </select>
+            </div>
+
+            <div class="form-actions">
+                <a href="/blood-requests/<%= bloodRequest.requestId %>" class="btn btn-outline">Cancel</a>
+                <button type="submit" class="btn btn-primary">Update Status</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<%- include('../common/footer', {pageTitle: typeof pageTitle!=='undefined'?pageTitle:undefined}) %>

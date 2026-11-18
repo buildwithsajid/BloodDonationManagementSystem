@@ -1,0 +1,126 @@
+<% var pageTitle = `Administrator Dashboard - BDMS`; %>
+<%- include('../common/header', {pageTitle: typeof pageTitle!=='undefined'?pageTitle:undefined}) %>
+<%- include('../common/navbar', {pageTitle: typeof pageTitle!=='undefined'?pageTitle:undefined}) %>
+
+<main class="main-container">
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Administrator Console</h1>
+            <p class="page-subtitle">Central operations and clinical inventory monitoring</p>
+        </div>
+        <div style="display: flex; gap: 8px;">
+            <a href="/donations/create" class="btn btn-primary btn-sm">+ Record Donation</a>
+            <a href="/blood-requests/create" class="btn btn-secondary btn-sm">+ Create Request</a>
+        </div>
+    </div>
+
+    <!-- Summary Metrics -->
+    <div class="stats-grid">
+        <div class="stat-card stat-primary">
+            <span class="stat-label">Total Donors</span>
+            <span class="stat-number"><%= totalDonors %></span>
+        </div>
+
+        <div class="stat-card stat-success">
+            <span class="stat-label">Available Donors</span>
+            <span class="stat-number"><%= availableDonors %></span>
+        </div>
+
+        <div class="stat-card stat-warning">
+            <span class="stat-label">Blood Requests</span>
+            <span class="stat-number"><%= totalRequests %></span>
+        </div>
+
+        <div class="stat-card">
+            <span class="stat-label">Total Donations</span>
+            <span class="stat-number"><%= totalDonations %></span>
+        </div>
+    </div>
+
+    <!-- Quick Navigation Panels -->
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;">
+        <div class="card" style="margin-bottom: 0;">
+            <div class="card-body">
+                <h4 style="font-size: 15px; margin-bottom: 6px;">Manage Blood Requests</h4>
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 14px;">Review emergency requests, change statuses to in-progress or fulfilled.</p>
+                <a href="/blood-requests" class="btn btn-outline btn-sm">All Requests &rarr;</a>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 0;">
+            <div class="card-body">
+                <h4 style="font-size: 15px; margin-bottom: 6px;">Record Donations</h4>
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 14px;">Log completed donations, update donor last donation dates.</p>
+                <a href="/donations" class="btn btn-outline btn-sm">All Donations &rarr;</a>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 0;">
+            <div class="card-body">
+                <h4 style="font-size: 15px; margin-bottom: 6px;">Donor Directory</h4>
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 14px;">Search suitable donors by blood group and city for quick response.</p>
+                <a href="/donors/available" class="btn btn-outline btn-sm">Search Donors &rarr;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Requests -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Recent Blood Requests</h3>
+            <a href="/blood-requests" class="btn btn-outline btn-sm">View All</a>
+        </div>
+        <div class="card-body" style="padding: 0;">
+            
+                <% if (notEmpty(recentRequests)) { %>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Blood Group</th>
+                                <th>Patient Name</th>
+                                <th>Hospital</th>
+                                <th>Units</th>
+                                <th>Urgency</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% (recentRequests||[]).forEach(function(req){ %>
+                                <tr>
+                                    <td>#<%= req.requestId %></td>
+                                    <td><span class="blood-badge"><%= req.bloodGroup %></span></td>
+                                    <td><%= req.patientName %></td>
+                                    <td><%= req.hospitalName %>, <%= req.city %></td>
+                                    <td><%= req.unitsRequired %></td>
+                                    <td>
+                                        <span class="urgency-pill urgency-<%= req.urgency.toString().toLowerCase() %>">
+                                            <%= req.urgency %>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="status-pill status-<%= req.status.toString().toLowerCase().replace('_', '-') %>">
+                                            <%= req.status %>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="/blood-requests/<%= req.requestId %>" class="btn btn-outline btn-sm">Details</a>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                
+                <% } else { %>
+                    <div class="empty-state">
+                        <div class="empty-state-title">No Requests Logged</div>
+                        <p>There are currently no blood requests in the system.</p>
+                    </div>
+                
+            <% } %>
+        </div>
+    </div>
+</main>
+
+<%- include('../common/footer', {pageTitle: typeof pageTitle!=='undefined'?pageTitle:undefined}) %>
