@@ -43,6 +43,7 @@ target/
 
 # Project documentation & PDFs
 docs/
-*.pdfnode_modules/
+*.pdf
+node_modules/
 .env*
 .vercel
