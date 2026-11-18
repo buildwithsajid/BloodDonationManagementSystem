@@ -40,3 +40,7 @@ target/
 
 # Environment files
 .env
+
+# Project documentation & PDFs
+docs/
+*.pdf
