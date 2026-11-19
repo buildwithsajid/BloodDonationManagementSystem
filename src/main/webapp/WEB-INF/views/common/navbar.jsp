@@ -5,8 +5,7 @@
         <a href="${pageContext.request.contextPath}/" class="navbar-brand">
             <div class="brand-icon">+</div>
             <div>
-                <span class="brand-name">BDMS</span>
-                <span class="brand-sub">Blood Donation System</span>
+                <span class="brand-name">Blood Donation Management System</span>
             </div>
         </a>
 

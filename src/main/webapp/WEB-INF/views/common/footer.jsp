@@ -23,7 +23,7 @@
             <h4>Institution & Department</h4>
             <p><strong>College:</strong> Guru Nanak Institute of Management Studies (GNIMS)</p>
             <p><strong>Address:</strong> King's Circle, Matunga (East), Mumbai - 400019</p>
-            <p><strong>Department:</strong> Department of Information Technology & Computer Applications</p>
+            <p><strong>Department:</strong>Master of Computer Applications</p>
         </div>
 
         <!-- Column 4: Project Team Members (EDIT NAMES & ROLL NUMBERS HERE) -->
@@ -31,10 +31,11 @@
             <h4>Project Team Members</h4>
             <ul>
                 <!-- EDIT TEAM MEMBERS AND ROLL NUMBERS BELOW -->
-                <li><strong>T087</strong> - Sajid Nafis Khan</li>
-                <li><strong>T088</strong> - Team Member 2</li>
-                <li><strong>T089</strong> - Team Member 3</li>
-                <li><strong>T090</strong> - Team Member 4</li>
+                <li><strong>26MCA063</strong> - Sajid Nafis Khan</li>
+                <li><strong>26MCA103</strong> - Mohammad Tabish Shaikh</li>
+                <li><strong>26MCA104</strong> - Harsh Singh</li>
+                <li><strong>26MCA105</strong> - Shobhit Singh</li>
+                <li><strong>26MCA118</strong> - Mukesh Kumar Yadav</li>
                 <!-- END EDIT SECTION -->
             </ul>
         </div>
