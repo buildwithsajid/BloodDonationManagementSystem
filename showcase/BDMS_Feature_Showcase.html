@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BDMS Feature Showcase</title>
+<style>
+  @page { size: A4 landscape; margin: 0; }
+  :root { --teal:#0F766E; --rose:#E11D48; --mint:#CCFBF1; --ink:#1E293B; --paper:#FFFDFB; --muted:#64748B; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: "Segoe UI", Arial, sans-serif; color:var(--ink); background:#fff; }
+  .page { width:297mm; height:210mm; padding:14mm 16mm; page-break-after:always; position:relative; overflow:hidden; background:var(--paper); }
+  .page:last-child { page-break-after:auto; }
+  h1 { font-size:34px; margin:0 0 6px; color:var(--teal); }
+  h2 { font-size:24px; margin:0 0 4px; color:var(--teal); }
+  h3 { font-size:15px; margin:0 0 6px; color:var(--ink); }
+  p, li { font-size:13.5px; line-height:1.55; }
+  .sub { color:var(--muted); margin:0 0 12px; font-size:13px; }
+  .bar { height:4px; width:70px; background:var(--rose); border-radius:2px; margin:6px 0 14px; }
+  .cover { background:linear-gradient(135deg,#0F766E 0%,#0b5a54 100%); color:#fff; display:flex; flex-direction:column; justify-content:center; }
+  .cover h1 { color:#fff; font-size:46px; }
+  .cover .tag { color:#CCFBF1; font-size:18px; margin:6px 0 28px; }
+  .cover .meta p { color:#E6FFFA; font-size:15px; margin:3px 0; }
+  .logo { width:64px; height:64px; border-radius:14px; background:#fff; color:var(--teal); font-size:44px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-bottom:22px; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  .card { background:#fff; border:1px solid #E2E8F0; border-left:4px solid var(--teal); border-radius:8px; padding:11px 14px; }
+  .card.r { border-left-color:var(--rose); }
+  .card ul { margin:4px 0 0; padding-left:18px; }
+  .stat { text-align:center; background:#fff; border:1px solid #E2E8F0; border-radius:8px; padding:12px 6px; }
+  .stat b { display:block; font-size:30px; color:var(--teal); }
+  .stat span { font-size:12px; color:var(--muted); }
+  .flow { display:flex; align-items:stretch; gap:10px; margin:10px 0 14px; }
+  .box { flex:1; background:#fff; border:2px solid var(--teal); border-radius:10px; padding:12px; text-align:center; }
+  .box b { display:block; font-size:16px; color:var(--teal); }
+  .box span { font-size:12px; color:var(--muted); }
+  .arrow { align-self:center; font-size:26px; color:var(--rose); }
+  table { border-collapse:collapse; width:100%; font-size:12.5px; }
+  th { background:var(--teal); color:#fff; text-align:left; padding:6px 9px; }
+  td { padding:5px 9px; border-bottom:1px solid #E2E8F0; background:#fff; }
+  .shot { display:flex; gap:14px; height:152mm; }
+  .shot .txt { width:78mm; flex:none; }
+  .shot .img { flex:1; border:1px solid #CBD5E1; border-radius:8px; overflow:hidden; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,.08); }
+  .shot img { width:100%; display:block; }
+  .pill { display:inline-block; background:var(--mint); color:var(--teal); border-radius:20px; padding:2px 10px; font-size:11.5px; font-weight:600; margin-bottom:8px; }
+  .pill.r { background:#FFE4E6; color:var(--rose); }
+  .foot { position:absolute; bottom:7mm; left:16mm; right:16mm; font-size:10.5px; color:var(--muted); display:flex; justify-content:space-between; }
+  .ok { color:var(--teal); font-weight:700; }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<section class="page cover">
+  <div class="logo">+</div>
+  <h1>Blood Donation Management System</h1>
+  <div class="tag">Connecting voluntary donors with hospitals in emergencies</div>
+  <div class="meta">
+    <p><b>Course:</b> Advanced Java Programming &mdash; Group Mini Project</p>
+    <p><b>College:</b> Guru Nanak Institute of Management Studies (GNIMS), Matunga, Mumbai</p>
+    <p><b>Department:</b> Information Technology &amp; Computer Applications</p>
+    <p><b>Presented by:</b> Sajid Nafis Khan (T087) and team</p>
+    <p><b>Stack:</b> Java 21 &bull; Spring Boot 4 &bull; JSP &bull; PostgreSQL (Neon)</p>
+  </div>
+</section>
+
+<!-- PROBLEM / OVERVIEW -->
+<section class="page">
+  <h2>1. Problem &amp; Solution</h2><div class="bar"></div>
+  <div class="grid2">
+    <div class="card r">
+      <h3>The problem</h3>
+      <ul>
+        <li>In an emergency, families search social media and phone lists to find a matching blood donor.</li>
+        <li>There is no trusted, searchable list of donors who are <b>available right now</b>.</li>
+        <li>Public lists expose donor phone numbers and invite spam.</li>
+        <li>Hospitals and camps have no single record of who donated and when.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Our solution: BDMS</h3>
+      <ul>
+        <li>A public directory searchable by <b>blood group</b> and <b>city</b>.</li>
+        <li>Donors register once and switch <b>availability</b> on or off themselves.</li>
+        <li>Admins publish <b>emergency blood requests</b> and track them to completion.</li>
+        <li>Every donation and every availability change is <b>recorded</b> for audit.</li>
+        <li>Donor contact details stay private.</li>
+      </ul>
+    </div>
+  </div>
+  <div style="height:14px"></div>
+  <div class="grid4">
+    <div class="stat"><b>8</b><span>Blood groups supported</span></div>
+    <div class="stat"><b>2</b><span>User roles: Admin, Donor</span></div>
+    <div class="stat"><b>6</b><span>Database tables</span></div>
+    <div class="stat"><b>24</b><span>Showcase donors preloaded</span></div>
+  </div>
+  <div class="foot"><span>Blood Donation Management System</span><span>GNIMS Mumbai</span></div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section class="page">
+  <h2>2. Technology &amp; Architecture</h2><div class="bar"></div>
+  <p class="sub">Classic layered Java web application (MVC), deployed on three cloud services.</p>
+  <div class="flow">
+    <div class="box"><b>Browser</b><span>Admin / Donor / Public</span></div>
+    <div class="arrow">&rarr;</div>
+    <div class="box"><b>Vercel</b><span>Public URL, forwards requests</span></div>
+    <div class="arrow">&rarr;</div>
+    <div class="box"><b>Render</b><span>Java Spring Boot app (Docker)</span></div>
+    <div class="arrow">&rarr;</div>
+    <div class="box"><b>Neon</b><span>PostgreSQL database</span></div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Layers inside the Java application</h3>
+      <ul>
+        <li><b>Controller:</b> 8 Spring MVC controllers handle URLs and sessions</li>
+        <li><b>Service:</b> business rules (status flow, donation checks, access rules)</li>
+        <li><b>Repository:</b> Spring Data JPA queries</li>
+        <li><b>Entity / DTO:</b> 6 JPA entities mapped to the 6 tables</li>
+        <li><b>View:</b> 20 JSP pages with JSTL, plain CSS and JavaScript</li>
+      </ul>
+    </div>
+    <div class="card r">
+      <h3>Technology stack</h3>
+      <table>
+        <tr><td><b>Language</b></td><td>Java 21</td></tr>
+        <tr><td><b>Framework</b></td><td>Spring Boot 4, Spring MVC</td></tr>
+        <tr><td><b>Persistence</b></td><td>Spring Data JPA, Hibernate</td></tr>
+        <tr><td><b>Database</b></td><td>PostgreSQL on Neon</td></tr>
+        <tr><td><b>Security</b></td><td>BCrypt password hashing, session fixation protection, role checks</td></tr>
+        <tr><td><b>Build</b></td><td>Maven (wrapper included), Docker</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="foot"><span>Blood Donation Management System</span><span>GNIMS Mumbai</span></div>
+</section>
+
+<!-- DATABASE & ROLES -->
+<section class="page">
+  <h2>3. Database &amp; User Roles</h2><div class="bar"></div>
+  <div class="grid2">
+    <div>
+      <h3>Six-table design</h3>
+      <table>
+        <tr><th>Table</th><th>Purpose</th></tr>
+        <tr><td><b>users</b></td><td>Login accounts, role (ADMIN / DONOR), active or inactive</td></tr>
+        <tr><td><b>blood_groups</b></td><td>The 8 blood groups (A+, A-, B+, B-, AB+, AB-, O+, O-)</td></tr>
+        <tr><td><b>donors</b></td><td>Donor profile: blood group, city, phone, availability, last donation</td></tr>
+        <tr><td><b>donation_history</b></td><td>Every recorded donation, who recorded it</td></tr>
+        <tr><td><b>blood_requests</b></td><td>Emergency requests with urgency and status</td></tr>
+        <tr><td><b>donor_availability_history</b></td><td>Audit trail of availability changes</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Who can do what</h3>
+      <table>
+        <tr><th>Feature</th><th>Public</th><th>Donor</th><th>Admin</th></tr>
+        <tr><td>Search donors, blood groups, open requests</td><td class="ok">Yes</td><td class="ok">Yes</td><td class="ok">Yes</td></tr>
+        <tr><td>Register as donor</td><td class="ok">Yes</td><td>&ndash;</td><td>&ndash;</td></tr>
+        <tr><td>Own dashboard, profile, availability</td><td>&ndash;</td><td class="ok">Yes</td><td>&ndash;</td></tr>
+        <tr><td>Own donation history &amp; certificate</td><td>&ndash;</td><td class="ok">Yes</td><td>&ndash;</td></tr>
+        <tr><td>Create / update blood requests</td><td>&ndash;</td><td>&ndash;</td><td class="ok">Yes</td></tr>
+        <tr><td>Record donations</td><td>&ndash;</td><td>&ndash;</td><td class="ok">Yes</td></tr>
+        <tr><td>Manage user accounts, audit trails</td><td>&ndash;</td><td>&ndash;</td><td class="ok">Yes</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="foot"><span>Blood Donation Management System</span><span>GNIMS Mumbai</span></div>
+</section>
+
+<!-- SCREENS -->
+<section class="page">
+  <h2>4. Feature Walkthrough</h2><div class="bar"></div>
+  <span class="pill">PUBLIC</span>
+  <div class="shot">
+    <div class="txt">
+      <h3>Login</h3>
+      <p>Secure sign-in for donors and administrators. Passwords are stored as BCrypt hashes, never as plain text.</p>
+      <p>Wrong passwords, unknown emails and deactivated accounts all get the same message, so attackers learn nothing.</p>
+    </div>
+    <div class="img"><img src="screens/01-login.png"></div>
+  </div>
+</section>
+
+<section class="page">
+  <span class="pill">PUBLIC</span>
+  <div class="shot" style="margin-top:6mm">
+    <div class="txt">
+      <h3>Donor registration</h3>
+      <p>Anyone can join as a donor in one form: name, email, password, blood group, date of birth, phone, city and area.</p>
+      <p>The form is validated: valid email, password of 8 to 72 characters, valid phone number, date of birth in the past, and a <b>unique email</b>.</p>
+    </div>
+    <div class="img"><img src="screens/02-register.png"></div>
+  </div>
+</section>
+
+<section class="page">
+  <span class="pill">PUBLIC</span>
+  <div class="shot" style="margin-top:6mm">
+    <div class="txt">
+      <h3>Find donors</h3>
+      <p>The home page lists every <b>available</b> donor with blood group, city and area.</p>
+      <p>Phone numbers and emails are hidden from the public list to prevent scraping and spam.</p>
+    </div>
+    <div class="img"><img src="screens/03-donor-search.png"></div>
+  </div>
+</section>
+
+<section class="page">
+  <span class="pill">PUBLIC</span>
+  <div class="shot" style="margin-top:6mm">
+    <div class="txt">
+      <h3>Search by blood group and city</h3>
+      <p>Filters can be combined, for example <b>O+ in Mumbai</b>. City matching ignores upper and lower case.</p>
+      <p>Only donors who are marked available appear, so the result is always someone who can help now.</p>
+    </div>
+    <div class="img"><img src="screens/04-donor-search-filtered.png"></div>
+  </div>
+</section>
+
+<section class="page">
+  <span class="pill">PUBLIC</span>
+  <div class="shot" style="margin-top:6mm">
+    <div class="txt">
+      <h3>Blood groups</h3>
+      <p>Reference page for all 8 supported blood groups, with a shortcut to search donors of each group.</p>
+    </div>
+    <div class="img"><img src="screens/05-blood-groups.png"></div>
+  </div>
+</section>
+
+<section class="page">
+  <span class="pill">PUBLIC</span>
+  <div class="shot" style="margin-top:6mm">
+    <div class="txt">
+      <h3>Open blood requests</h3>
+      <p>Everyone can see requests that still need blood (<b>Pending</b> and <b>In progress</b>), with urgency: Normal, Urgent or Critical.</p>
+      <p>Requests can be filtered by blood group, city and status. Fulfilled and cancelled requests are not listed.</p>
+    </div>
+    <div class="img"><img src="screens/06-open-requests.png"></div>
+  </div>
+</section>
+
+<section class="page">
+  <span class="pill r">ADMIN</span>
+  <div class="shot" style="margin-top:6mm">
+    <div class="txt">
+      <h3>Administrator console</h3>
+      <p>Live statistics: total donors, available donors, blood requests and total donations.</p>
+      <p>Shortcuts to the main tasks, and a table of the most recent blood requests.</p>
+    </div>
+    <div class="img"><img src="screens/07-admin-dashboard.png"></div>
+  </div>
+</section>
+
+<section class="page">
+  <span class="pill r">ADMIN</span>
+  <div class="shot" style="margin-top:6mm">
+    <div class="txt">
+      <h3>Create a blood request</h3>
+      <p>Admins enter patient, hospital, city, contact number, blood group, units and urgency.</p>
+      <p>Rules enforced: units must be 1 or more, contact number must be valid, and the required-by date cannot be in the past.</p>
+    </div>
+    <div class="img"><img src="screens/08-admin-create-request.png"></div>
+  </div>
+</section>
+
+<section class="page">
+  <span class="pill r">ADMIN</span>
+  <div class="shot" style="margin-top:6mm">
+    <div class="txt">
+      <h3>Request details</h3>
+      <p>Full record of one request: patient, hospital, urgency, status, dates and the administrator who recorded it.</p>
+      <p>Admins get an <b>Update Request Status</b> button while the request is still open.</p>
+    </div>
+    <div class="img"><img src="screens/09-request-details.png"></div>
+  </div>
+</section>
+
+<section class="page">
+  <span class="pill r">ADMIN</span>
+  <div class="shot" style="margin-top:6mm">
+    <div class="txt">
+      <h3>Request status workflow</h3>
+      <p>Allowed flow: <b>Pending &rarr; In progress &rarr; Fulfilled or Cancelled</b>.</p>
+      <p>Going backwards, repeating a status, or changing a fulfilled or cancelled request is blocked with a clear message.</p>
+    </div>
+    <div class="img"><img src="screens/10-request-update-status.png"></div>
+  </div>
+</section>
+
+<section class="page">
+  <span class="pill r">ADMIN</span>
+  <div class="shot" style="margin-top:6mm">
+    <div class="txt">
+      <h3>Record a donation</h3>
+      <p>Admins log a completed donation with donor, date, location and remarks.</p>
+      <p>Rules: the date cannot be in the future or earlier than the donor's previous donation, and the donor must exist. The donor's <b>last donation date</b> updates automatically.</p>
+    </div>
+    <div class="img"><img src="screens/11-admin-record-donation.png"></div>
+  </div>
+</section>
+
+<section class="page">
+  <span class="pill r">ADMIN</span>
+  <div class="shot" style="margin-top:6mm">
+    <div class="txt">
+      <h3>All donations</h3>
+      <p>A complete register of every donation recorded in the system, with the donor, blood group, place and the admin who recorded it.</p>
+    </div>
+    <div class="img"><img src="screens/12-admin-all-donations.png"></div>
+  </div>
+</section>
+
+<section class="page">
+  <span class="pill r">ADMIN</span>
+  <div class="shot" style="margin-top:6mm">
+    <div class="txt">
+      <h3>Donation history of one donor</h3>
+      <p>Admins can open the history of any single donor, newest donation first.</p>
+    </div>
+    <div class="img"><img src="screens/13-admin-donor-donations.png"></div>
+  </div>
+</section>
+
+<section class="page">
+  <span class="pill r">ADMIN</span>
+  <div class="shot" style="margin-top:6mm">
+    <div class="txt">
+      <h3>Availability audit trail</h3>
+      <p>Every time a donor switches between available and unavailable, a record is kept: previous status, new status, time and who changed it.</p>
+      <p>This history cannot be edited from the application.</p>
+    </div>
+    <div class="img"><img src="screens/14-admin-availability-audit.png"></div>
+  </div>
+</section>
+
+<section class="page">
+  <span class="pill r">ADMIN</span>
+  <div class="shot" style="margin-top:6mm">
+    <div class="txt">
+      <h3>User account control</h3>
+      <p>Admins can activate or deactivate any account. A deactivated donor can no longer log in.</p>
+      <p>An administrator <b>cannot deactivate their own account</b>, so the system can never lock itself out.</p>
+    </div>
+    <div class="img"><img src="screens/15-admin-user-details.png"></div>
+  </div>
+</section>
+
+<section class="page">
+  <span class="pill">DONOR</span>
+  <div class="shot" style="margin-top:6mm">
+    <div class="txt">
+      <h3>Donor dashboard</h3>
+      <p>After login, a donor sees their blood group, city, availability and last donation date at a glance.</p>
+    </div>
+    <div class="img"><img src="screens/16-donor-dashboard.png"></div>
+  </div>
+</section>
+
+<section class="page">
+  <span class="pill">DONOR</span>
+  <div class="shot" style="margin-top:6mm">
+    <div class="txt">
+      <h3>Profile &amp; availability switch</h3>
+      <p>Donors see their full profile and can switch <b>Available / Unavailable</b> themselves, for example after a recent illness or travel.</p>
+      <p>Setting the same status twice is rejected, and a donor can only change their own availability.</p>
+    </div>
+    <div class="img"><img src="screens/17-donor-profile.png"></div>
+  </div>
+</section>
+
+<section class="page">
+  <span class="pill">DONOR</span>
+  <div class="shot" style="margin-top:6mm">
+    <div class="txt">
+      <h3>My availability history</h3>
+      <p>Donors can review their own status changes and see who made each change.</p>
+    </div>
+    <div class="img"><img src="screens/18-donor-availability-history.png"></div>
+  </div>
+</section>
+
+<section class="page">
+  <span class="pill">DONOR</span>
+  <div class="shot" style="margin-top:6mm">
+    <div class="txt">
+      <h3>My donation history</h3>
+      <p>A personal record of all verified donations, each with a <b>View Certificate</b> link.</p>
+    </div>
+    <div class="img"><img src="screens/19-donor-donation-history.png"></div>
+  </div>
+</section>
+
+<section class="page">
+  <span class="pill">DONOR</span>
+  <div class="shot" style="margin-top:6mm">
+    <div class="txt">
+      <h3>Donation certificate</h3>
+      <p>Details of one donation: date, place, blood group and who verified it.</p>
+      <p>A donor can only open <b>their own</b> certificates. Trying another donor's link redirects back to their own history.</p>
+    </div>
+    <div class="img"><img src="screens/20-donation-certificate.png"></div>
+  </div>
+</section>
+
+<!-- SECURITY -->
+<section class="page">
+  <h2>5. Security &amp; Data Integrity</h2><div class="bar"></div>
+  <div class="grid3">
+    <div class="card"><h3>Passwords</h3><ul><li>BCrypt hashing with salt</li><li>No plain-text passwords stored</li><li>Max length enforced</li></ul></div>
+    <div class="card"><h3>Sessions</h3><ul><li>New session id on login (fixation defense)</li><li>Session id only in cookie, never in the URL</li><li>Logout ends the session</li></ul></div>
+    <div class="card"><h3>Access control</h3><ul><li>Admin pages blocked for donors and visitors</li><li>Donor pages blocked for visitors</li><li>Donors see only their own data</li></ul></div>
+    <div class="card r"><h3>Privacy</h3><ul><li>Phone and email hidden from the public list</li><li>Same error for wrong email or password</li></ul></div>
+    <div class="card r"><h3>Database integrity</h3><ul><li>Primary and foreign keys</li><li>CHECK constraints on roles, statuses, blood groups, urgency</li><li>Unique email</li></ul></div>
+    <div class="card r"><h3>Validation</h3><ul><li>Bean validation on every form</li><li>Business rules in the service layer</li><li>Friendly messages instead of crashes</li></ul></div>
+  </div>
+  <div class="foot"><span>Blood Donation Management System</span><span>GNIMS Mumbai</span></div>
+</section>
+
+<!-- TESTING -->
+<section class="page">
+  <h2>6. Testing Results</h2><div class="bar"></div>
+  <p class="sub">76 tests executed, <span class="ok">76 passed, 0 failed</span>. Full report: <code>testing/TEST_REPORT.md</code></p>
+  <div class="grid2">
+    <table>
+      <tr><th>Module</th><th>Tests</th><th>Passed</th></tr>
+      <tr><td>Public pages and search</td><td>12</td><td class="ok">12</td></tr>
+      <tr><td>Authentication</td><td>4</td><td class="ok">4</td></tr>
+      <tr><td>Registration validation</td><td>6</td><td class="ok">6</td></tr>
+      <tr><td>Donor portal</td><td>11</td><td class="ok">11</td></tr>
+      <tr><td>Role-based access control</td><td>13</td><td class="ok">13</td></tr>
+      <tr><td>Admin console</td><td>27</td><td class="ok">27</td></tr>
+      <tr><td>Session / logout</td><td>2</td><td class="ok">2</td></tr>
+      <tr><td>Application start-up and database mapping (unit test)</td><td>1</td><td class="ok">1</td></tr>
+      <tr><td><b>Total</b></td><td><b>76</b></td><td class="ok"><b>76</b></td></tr>
+    </table>
+    <div class="card r">
+      <h3>Examples of rules proven by the tests</h3>
+      <ul>
+        <li>Wrong password, unknown email and empty form are all rejected.</li>
+        <li>Duplicate email, short password, bad phone and future birth date block registration.</li>
+        <li>Visitors and donors are redirected away from every admin page.</li>
+        <li>A request cannot move backwards or change after it is fulfilled.</li>
+        <li>A donation cannot be future-dated, older than the previous donation, or for an unknown donor.</li>
+        <li>An admin cannot deactivate their own account; a deactivated donor cannot log in.</li>
+        <li>A donor cannot open another donor's donation certificate.</li>
+      </ul>
+      <h3 style="margin-top:10px">Bug found by testing, and fixed</h3>
+      <p>The request details page crashed because a page field name did not match the data object. It was corrected and re-tested.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Blood Donation Management System</span><span>GNIMS Mumbai</span></div>
+</section>
+
+<!-- DEPLOYMENT & FUTURE -->
+<section class="page">
+  <h2>7. Deployment &amp; Future Scope</h2><div class="bar"></div>
+  <div class="grid2">
+    <div class="card">
+      <h3>How it is deployed</h3>
+      <ul>
+        <li><b>GitHub:</b> source code, one branch (main)</li>
+        <li><b>Neon:</b> managed PostgreSQL database</li>
+        <li><b>Render:</b> builds the Dockerfile and runs the Java application; database settings come from environment variables</li>
+        <li><b>Vercel:</b> public web address that forwards every request to the Java application</li>
+        <li>A built-in keep-alive ping every 10 minutes stops the free Render service from going to sleep</li>
+      </ul>
+    </div>
+    <div class="card r">
+      <h3>Future scope</h3>
+      <ul>
+        <li>SMS and email alerts to matching donors when a critical request is created</li>
+        <li>Eligibility rule: block donors who donated in the last 90 days</li>
+        <li>Hospital and blood-bank logins</li>
+        <li>Map-based donor search</li>
+        <li>Admin reports and CSV export</li>
+        <li>Mobile app</li>
+      </ul>
+    </div>
+  </div>
+  <div style="height:16px"></div>
+  <div class="card" style="text-align:center">
+    <h3>Thank you</h3>
+    <p>Blood Donation Management System &bull; Advanced Java Group Mini Project &bull; GNIMS Mumbai</p>
+  </div>
+  <div class="foot"><span>Blood Donation Management System</span><span>GNIMS Mumbai</span></div>
+</section>
+
+</body>
+</html>
